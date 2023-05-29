@@ -13,6 +13,7 @@ const ModalCreateTicket = ({getAllTickets}) => {
 
     const [priorities, setPriorities] = useState([])
     const [statuses, setStatuses] = useState([])
+    
   
     const getAllPriorities = async () =>{
       try {

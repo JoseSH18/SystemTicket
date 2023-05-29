@@ -49,6 +49,16 @@ class TicketController extends Controller
         
     }
 
+    public function assign(Request $request)
+    {
+        $ticket = Ticket::findOrFail($request->id);
+        $ticket->id_Agent = $request->id_Agent;
+
+
+        $ticket->save();
+        return $ticket;
+    }
+
     public function getAgents()
     {
         $agents = User::role('Agent')->get();
