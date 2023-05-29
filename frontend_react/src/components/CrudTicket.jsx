@@ -2,6 +2,7 @@ import React from 'react'
 import Table from 'react-bootstrap/Table';
 import SideBarNavBar from './SideBar_NavBar';
 
+
 import {useEffect, useState} from 'react'
 import axios from 'axios'
 
@@ -22,7 +23,7 @@ const CrudTicket = () => {
   }
   return (
     <div>   
-<SideBarNavBar/>
+<SideBarNavBar getAllTickets={getAllTickets}/>
 
     <Table striped bordered hover responsive size="sm">
     <thead>
@@ -40,7 +41,7 @@ const CrudTicket = () => {
                           <td>{ticket.text_Description}</td>   
                           <td>{ticket.priority.type}</td>   
                           <td>{ticket.status.status}</td>
-                          <td>{ticket.agent.name}</td>
+                          <td>{ticket.agent ? ticket.agent.name : <span style={{ color: 'red' }}>Sin Asignar</span>}</td>
                           <td>{ticket.user.name}</td>
                       </tr>  
       ) )}

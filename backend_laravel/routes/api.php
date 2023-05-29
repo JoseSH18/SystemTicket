@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(TicketController::class)->group(function (){
     Route::get('/tickets', 'index')->name('api.tickets.index');
     Route::post('/ticket/store', 'store')->name('api.tickets.store');
+    Route::get('/ticket/priorities', 'getPriorities')->name('api.tickets.priorities');
+    Route::get('/ticket/statuses', 'getStatuses')->name('api.tickets.statuses');
 });
 Route::post('/register', [RegisterController::class, 'register'])->name('api.auth.register');
 Route::post('/login', [LoginController::class, 'login'])->name('api.auth.login');

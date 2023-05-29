@@ -7,7 +7,8 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-const SideBar_NavBar = () => {
+import ModalCreateTicket from './ModalCreateTicket';
+const SideBar_NavBar = ({getAllTickets}) => {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -27,7 +28,7 @@ const SideBar_NavBar = () => {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="#action1">Home</Nav.Link>
+            <ModalCreateTicket getAllTickets={getAllTickets}/>
             <Nav.Link href="#action2">Link</Nav.Link>
             <NavDropdown title="Link" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
