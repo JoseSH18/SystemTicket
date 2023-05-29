@@ -1,25 +1,21 @@
 import React from 'react'
-import { useState } from 'react';
+
 import Button from 'react-bootstrap/Button';
-import Offcanvas from 'react-bootstrap/Offcanvas';
+
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import ModalCreateTicket from './ModalCreateTicket';
-const SideBar_NavBar = ({getAllTickets}) => {
-    const [show, setShow] = useState(false);
+import SideBar from './SideBar';
+const NavBar = ({getAllTickets}) => {
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
   return (
     <div>
         <Navbar bg="light" expand="lg">
       <Container fluid>
-      <Button onClick={handleShow} className='d-flex'>
-        Launch
-      </Button>
+        <SideBar/>
         <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
@@ -56,17 +52,9 @@ const SideBar_NavBar = ({getAllTickets}) => {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-    <Offcanvas show={show} onHide={handleClose}>
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          Some text as placeholder. In real life you can have the elements you
-          have chosen. Like, text, images, lists, etc.
-        </Offcanvas.Body>
-      </Offcanvas>
+   
       </div>
   )
 }
 
-export default SideBar_NavBar
+export default NavBar

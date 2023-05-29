@@ -1,6 +1,6 @@
 import React from 'react'
 import Table from 'react-bootstrap/Table';
-import SideBarNavBar from './SideBar_NavBar';
+import NavBar from './NavBar';
 
 
 import {useEffect, useState} from 'react'
@@ -23,7 +23,7 @@ const CrudTicket = () => {
   }
   return (
     <div>   
-<SideBarNavBar getAllTickets={getAllTickets}/>
+<NavBar getAllTickets={getAllTickets}/>
 
     <Table striped bordered hover responsive size="sm">
     <thead>
