@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
+            $table->string('title', 30);
             $table->string('text_Description', 100);
             $table->unsignedBigInteger('id_Priority');
             $table->unsignedBigInteger('id_Status');

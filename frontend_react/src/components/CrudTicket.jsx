@@ -29,6 +29,7 @@ const CrudTicket = () => {
     <Table striped bordered hover responsive size="sm">
     <thead>
       <tr>
+        <th>Title</th>
         <th>Description</th>
         <th>Priority</th>
         <th>Status</th>
@@ -40,6 +41,7 @@ const CrudTicket = () => {
     <tbody>
     { tickets.map( (ticket)=>(
                       <tr key={ticket.id}>
+                          <td>{ticket.title}</td>   
                           <td>{ticket.text_Description}</td>   
                           <td>{ticket.priority.type}</td>   
                           <td>{ticket.status.status}</td>
@@ -50,6 +52,9 @@ const CrudTicket = () => {
                             <NavDropdown.Item href="#action3"><ModalAssignTicket AssignObjects={{id: ticket.id, getAllTickets: getAllTickets}}/></NavDropdown.Item>
                             <NavDropdown.Item href="#action4">
                               Editar
+                            </NavDropdown.Item>
+                            <NavDropdown.Item href="#action5">
+                              Detalle
                             </NavDropdown.Item>
                             <NavDropdown.Item href="#action5">
                               Eliminar

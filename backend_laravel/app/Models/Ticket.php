@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ticket extends Model
 {
     protected $fillable = [
+        'title',
         'text_Description',
     ];
     public function user()
@@ -29,6 +30,11 @@ class Ticket extends Model
     public function status()
     {
         return $this->belongsTo(Status::class, 'id_Status');
+    }
+
+    public function files()
+    {
+        return $this->hasMany(File::class, 'id_Ticket');
     }
     use HasFactory;
 }

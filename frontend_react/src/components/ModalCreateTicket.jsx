@@ -6,14 +6,20 @@ import {Button, Form, Modal} from 'react-bootstrap';
 const endpoint = 'http://localhost:8000/api/ticket'
 const ModalCreateTicket = ({getAllTickets}) => {
 
+    const [title, setTitle] = useState('')
     const [text_Description, setText_Description] = useState('')
     const [id_Priority, setId_Priority] = useState(0)
     const [id_Status, setId_Status] = useState(0)
+    const [files, setFiles] = useState([]);
+
+    const handleFileChange = (event) => {
+      const fileList = event.target.files;
+      setFiles([...files, ...fileList]);
+    };
     const navigate = useNavigate()
 
     const [priorities, setPriorities] = useState([])
     const [statuses, setStatuses] = useState([])
-    
   
     const getAllPriorities = async () =>{
       try {
@@ -39,12 +45,29 @@ const ModalCreateTicket = ({getAllTickets}) => {
   
   const store = async (e) =>{
     e.preventDefault()
-    await axios.post(`${endpoint}/store`, {text_Description: text_Description, id_Priority: id_Priority
-        , id_Status: id_Status})
+    const formData = new FormData();
+    files.forEach((file) => formData.append('file[]', file));
+    formData.append('title', title); 
+    formData.append('text_Description', text_Description);
+    formData.append('id_Priority', id_Priority); 
+    formData.append('id_Status', id_Status); 
+  
+    await axios.post(`${endpoint}/store`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
     handleClose();
     getAllTickets();
+    setFiles([]);
+    setTitle('');
+    setText_Description('');
+    setId_Priority(0);
+    setId_Status(0);
     navigate('/')
+
   }
+ 
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -60,6 +83,15 @@ const ModalCreateTicket = ({getAllTickets}) => {
         <Modal.Title>Crear Ticket</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        
+  <Form.Group controlId="formText">
+    <Form.Label>Título</Form.Label>
+    <Form.Control
+      type="text"
+      value={title}
+      onChange={e => setTitle(e.target.value)}
+    />
+  </Form.Group>
   <Form.Group controlId="formPriority">
     <Form.Label>Selecciona una prioridad</Form.Label>
     <Form.Control as="select" value={id_Priority} onChange={e => setId_Priority(e.target.value)}>
@@ -93,6 +125,10 @@ const ModalCreateTicket = ({getAllTickets}) => {
       onChange={e => setText_Description(e.target.value)}
     />
   </Form.Group>
+  <Form.Group controlId="formFile">
+        <Form.Label>Seleccionar archivo</Form.Label>
+        <Form.Control type="file" multiple onChange={handleFileChange} />
+</Form.Group>
 </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>

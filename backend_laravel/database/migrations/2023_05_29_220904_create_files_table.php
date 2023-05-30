@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreign('id_Rol')->references('id')->on('roles');
+        Schema::create('files', function (Blueprint $table) {
+            $table->id();
+            $table->binary('file');
+            $table->unsignedBigInteger('id_Ticket');
+            $table->timestamps();
+
+            $table->foreign('id_Ticket')->references('id')->on('tickets');
         });
     }
 
@@ -21,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('files');
     }
 };

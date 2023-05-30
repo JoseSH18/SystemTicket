@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Priority;
+use App\Models\File;
 use App\Models\Status;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,13 +35,28 @@ class TicketController extends Controller
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
                 $ticket = new Ticket();
+
+                $ticket->title = $request->title;
                 $ticket->text_Description = $request->text_Description;
                 $ticket->id_Priority = $request->id_Priority;
                 $ticket->id_Status = $request->id_Status;
                 $ticket->id_User = $user->id;
-    
-        
                 $ticket->save();
+                
+
+                if ($request->hasFile('file')) {
+                    $files = $request->file('file');
+                
+                    foreach ($files as $fieldName => $file) {
+                        $uploadedFile = new File();
+                        $uploadedFile->file = $file->get();
+                        
+                        $ticket->files()->save($uploadedFile);
+                    }
+                }
+                
+                
+              
             } 
            
         } catch (\Throwable $th) {
