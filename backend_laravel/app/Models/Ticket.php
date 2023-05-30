@@ -36,5 +36,13 @@ class Ticket extends Model
     {
         return $this->hasMany(File::class, 'id_Ticket');
     }
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_ticket', 'id_Ticket', 'id_Category');
+    }
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'tag_ticket', 'id_Ticket', 'id_Tag');
+    }
     use HasFactory;
 }

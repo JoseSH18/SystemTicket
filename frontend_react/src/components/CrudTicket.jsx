@@ -36,6 +36,8 @@ const CrudTicket = () => {
         <th>Status</th>
         <th>Agent</th>
         <th>User</th>
+        <th>Categorías</th>
+        <th>Etiquetas</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -48,6 +50,8 @@ const CrudTicket = () => {
                           <td>{ticket.status.status}</td>
                           <td>{ticket.agent ? ticket.agent.name : <span style={{ color: 'red' }}>Sin Asignar</span>}</td>
                           <td>{ticket.user.name}</td>
+                          <td>{ticket.categories.map(category => category.category).join(', ')}</td>
+                          <td>{ticket.tags.map(tag => tag.tag).join(', ')}</td>
                           <td>
                           <NavDropdown title={<i className="fa-solid fa-ellipsis-vertical"></i>} id="navbarScrollingDropdown">
                             <NavDropdown.Item href="#action3"><ModalAssignTicket AssignObjects={{id: ticket.id, getAllTickets: getAllTickets}}/></NavDropdown.Item>

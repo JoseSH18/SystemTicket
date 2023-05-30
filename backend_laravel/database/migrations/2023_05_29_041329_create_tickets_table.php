@@ -21,10 +21,10 @@ return new class extends Migration
             $table->unsignedBigInteger('id_User');
             $table->timestamps();
 
-            $table->foreign('id_Priority')->references('id')->on('priorities');
-            $table->foreign('id_Status')->references('id')->on('statuses');
-            $table->foreign('id_Agent')->references('id')->on('users');
-            $table->foreign('id_User')->references('id')->on('users');
+            $table->foreign('id_Priority')->references('id')->on('priorities')->onDelete('cascade');
+            $table->foreign('id_Status')->references('id')->on('statuses')->onDelete('cascade');
+            $table->foreign('id_Agent')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('id_User')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

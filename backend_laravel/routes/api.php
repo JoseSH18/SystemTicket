@@ -26,6 +26,8 @@ Route::controller(TicketController::class)->group(function (){
     Route::get('/ticket/priorities', 'getPriorities')->name('api.tickets.priorities');
     Route::get('/ticket/statuses', 'getStatuses')->name('api.tickets.statuses');
     Route::get('/ticket/agents', 'getAgents')->name('api.tickets.agents');
+    Route::get('/ticket/tags', 'getTags')->name('api.tickets.tags');
+    Route::get('/ticket/categories', 'getCategories')->name('api.tickets.categories');
 });
 Route::post('/register', [RegisterController::class, 'register'])->name('api.auth.register');
 Route::post('/login', [LoginController::class, 'login'])->name('api.auth.login');

@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('tag_ticket', function (Blueprint $table) {
             $table->id();
-            $table->binary('file');
             $table->unsignedBigInteger('id_Ticket');
+            $table->unsignedBigInteger('id_Tag');
             $table->timestamps();
 
             $table->foreign('id_Ticket')->references('id')->on('tickets')->onDelete('cascade');
+            $table->foreign('id_Tag')->references('id')->on('tags')->onDelete('cascade');
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('tag_ticket');
     }
 };

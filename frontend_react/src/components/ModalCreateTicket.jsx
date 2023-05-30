@@ -12,6 +12,8 @@ const ModalCreateTicket = ({getAllTickets}) => {
     const [text_Description, setText_Description] = useState('')
     const [id_Priority, setId_Priority] = useState(0)
     const [id_Status, setId_Status] = useState(0)
+    const [ids_Categories, setIds_Cateogories] = useState([]);
+    const [ids_Tags, setIds_Tags] = useState([]);
 
     const [files, setFiles] = useState([]);
 
@@ -24,11 +26,29 @@ const ModalCreateTicket = ({getAllTickets}) => {
 
     const [priorities, setPriorities] = useState([])
     const [statuses, setStatuses] = useState([])
+    const [tags, setTags] = useState([]);
+    const [categories, setCategories] = useState([]);
   
     const getAllPriorities = async () =>{
       try {
         const response = await axios.get(`${endpoint}/priorities`)
         setPriorities(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    const getAllCategories = async () =>{
+      try {
+        const response = await axios.get(`${endpoint}/categories`)
+        setCategories(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    const getAllTags= async () =>{
+      try {
+        const response = await axios.get(`${endpoint}/tags`)
+        setTags(response.data)
       } catch (error) {
         console.error(error)
       }
@@ -46,12 +66,16 @@ const ModalCreateTicket = ({getAllTickets}) => {
     useEffect ( ()=>{
         getAllPriorities();
         getAllStatuses();
+        getAllCategories();
+        getAllTags();
     }, [])
   
   const store = async (e) =>{
     e.preventDefault()
     const formData = new FormData();
     files.forEach((file) => formData.append('file[]', file));
+    ids_Categories.forEach((categoryId) => formData.append('ids_Categories[]', categoryId));
+    ids_Tags.forEach((tagId) => formData.append('ids_Tags[]', tagId));
     formData.append('title', title); 
     formData.append('text_Description', text_Description);
     formData.append('id_Priority', id_Priority); 
@@ -69,6 +93,8 @@ const ModalCreateTicket = ({getAllTickets}) => {
     setText_Description('');
     setId_Priority(0);
     setId_Status(0);
+    setIds_Cateogories([]);
+    setIds_Tags([]);
     navigate('/')
 
   }
@@ -137,8 +163,25 @@ const ModalCreateTicket = ({getAllTickets}) => {
         <Form.Label>Seleccionar archivo</Form.Label>
         <Form.Control type="file" multiple onChange={handleFileChange}  />
 </Form.Group>
+<Form.Group controlId="formCategory">
+  <Form.Label>Selecciona una o más categorías</Form.Label>
+  <Form.Control as="select" multiple value={ids_Categories} onChange={e => setIds_Cateogories(Array.from(e.target.selectedOptions, option => option.value))} required>
+    {categories.map(category => (
+      <option key={category.id} value={category.id}>
+        {category.category}
+      </option>
+    ))}
+  </Form.Control>
+</Form.Group>
 <Form.Group controlId="formTag">
-
+  <Form.Label>Selecciona una o más etiquetas</Form.Label>
+  <Form.Control as="select" multiple value={ids_Tags} onChange={e => setIds_Tags(Array.from(e.target.selectedOptions, option => option.value))} required>
+    {tags.map(tag => (
+      <option key={tag.id} value={tag.id}>
+        {tag.tag}
+      </option>
+    ))}
+  </Form.Control>
 </Form.Group>
 </Modal.Body>
       <Modal.Footer>
