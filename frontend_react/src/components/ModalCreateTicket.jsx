@@ -3,6 +3,8 @@ import React, {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import {Button, Form, Modal} from 'react-bootstrap';
 
+
+
 const endpoint = 'http://localhost:8000/api/ticket'
 const ModalCreateTicket = ({getAllTickets}) => {
 
@@ -10,7 +12,9 @@ const ModalCreateTicket = ({getAllTickets}) => {
     const [text_Description, setText_Description] = useState('')
     const [id_Priority, setId_Priority] = useState(0)
     const [id_Status, setId_Status] = useState(0)
+
     const [files, setFiles] = useState([]);
+
 
     const handleFileChange = (event) => {
       const fileList = event.target.files;
@@ -38,6 +42,7 @@ const ModalCreateTicket = ({getAllTickets}) => {
         console.error(error)
       }
     }
+
     useEffect ( ()=>{
         getAllPriorities();
         getAllStatuses();
@@ -79,6 +84,7 @@ const ModalCreateTicket = ({getAllTickets}) => {
     </Button>
 
     <Modal show={show} onHide={handleClose}>
+    <Form onSubmit={store}>
       <Modal.Header closeButton>
         <Modal.Title>Crear Ticket</Modal.Title>
       </Modal.Header>
@@ -90,12 +96,13 @@ const ModalCreateTicket = ({getAllTickets}) => {
       type="text"
       value={title}
       onChange={e => setTitle(e.target.value)}
+      required
     />
   </Form.Group>
   <Form.Group controlId="formPriority">
     <Form.Label>Selecciona una prioridad</Form.Label>
-    <Form.Control as="select" value={id_Priority} onChange={e => setId_Priority(e.target.value)}>
-      <option value={0}>Seleccionar</option>
+    <Form.Control as="select" value={id_Priority} onChange={e => setId_Priority(e.target.value)} required >
+      <option value="">Seleccionar</option>
       {priorities.map(priority => (
         <option key={priority.id} value={priority.id}>
           {priority.type}
@@ -106,8 +113,8 @@ const ModalCreateTicket = ({getAllTickets}) => {
 
   <Form.Group controlId="formStatus">
     <Form.Label>Selecciona un estado</Form.Label>
-    <Form.Control as="select" value={id_Status} onChange={e => setId_Status(e.target.value)}>
-      <option value={0}>Seleccionar</option>
+    <Form.Control as="select" value={id_Status} onChange={e => setId_Status(e.target.value)} required >
+      <option value="">Seleccionar</option>
       {statuses.map(status => (
         <option key={status.id} value={status.id}>
           {status.status}
@@ -123,22 +130,28 @@ const ModalCreateTicket = ({getAllTickets}) => {
       rows={3}
       value={text_Description}
       onChange={e => setText_Description(e.target.value)}
+      required 
     />
   </Form.Group>
   <Form.Group controlId="formFile">
         <Form.Label>Seleccionar archivo</Form.Label>
-        <Form.Control type="file" multiple onChange={handleFileChange} />
+        <Form.Control type="file" multiple onChange={handleFileChange}  />
+</Form.Group>
+<Form.Group controlId="formTag">
+
 </Form.Group>
 </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
           Cerrar
         </Button>
-        <Button variant="primary" onClick={store}>
+        <Button variant="primary" type="submit" >
             Crear
         </Button>
       </Modal.Footer>
+      </Form>
     </Modal>
+
   </>
   )
 }

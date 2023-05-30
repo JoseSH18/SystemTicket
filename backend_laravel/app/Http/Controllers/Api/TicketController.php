@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Priority;
@@ -22,6 +23,17 @@ class TicketController extends Controller
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|max:30',
+            'id_Priority' => 'required|numeric',
+            'id_Status' => 'required|numeric',
+            'text_Description' => 'required|max:100',
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    
         
         try {
             $email = 'prueba@prueba.com';
@@ -35,12 +47,15 @@ class TicketController extends Controller
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
                 $ticket = new Ticket();
+                $priority = Priority::find($request->id_Priority);
+                $status = Status::find($request->id_Status);
 
                 $ticket->title = $request->title;
                 $ticket->text_Description = $request->text_Description;
-                $ticket->id_Priority = $request->id_Priority;
-                $ticket->id_Status = $request->id_Status;
-                $ticket->id_User = $user->id;
+                $ticket->priority()->associate( $priority);
+                $ticket->status()->associate($status);
+                $ticket->user()->associate($user);
+
                 $ticket->save();
                 
 

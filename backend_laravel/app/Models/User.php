@@ -46,9 +46,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function tickets()
+    public function ticketsUser()
     {
-        return $this->hasMany(Ticket::class);
+        return $this->hasMany(Ticket::class, 'id_User');
+    }
+    
+    public function ticketsAgent()
+    {
+        return $this->hasMany(Ticket::class, 'id_Agent');
     }
 
     // Relación muchos a uno con el modelo Rol

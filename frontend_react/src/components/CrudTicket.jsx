@@ -4,6 +4,7 @@ import NavBar from './NavBar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import ModalAssignTicket from './ModalAssignTicket';
 
+
 import {useEffect, useState} from 'react'
 import axios from 'axios'
 
@@ -26,7 +27,7 @@ const CrudTicket = () => {
     <div>   
 <NavBar getAllTickets={getAllTickets}/>
 
-    <Table striped bordered hover responsive size="sm">
+    <Table striped bordered hover size="sm">
     <thead>
       <tr>
         <th>Title</th>
@@ -65,6 +66,7 @@ const CrudTicket = () => {
       ) )}
     </tbody>
   </Table>
+
   </div>
   )
 }
