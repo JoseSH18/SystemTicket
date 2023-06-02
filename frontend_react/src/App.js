@@ -1,16 +1,57 @@
-
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import CrudTicket from './components/CrudTicket'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import CrudTicket from './components/CrudTicket.jsx';
+import { FormRegister } from './components/FormRegister';
+import FormLogin from './components/FormLogin';
+import axios from 'axios';
+
+const PrivateRoute = ({ element: Element, ...rest }) => {
+  const isAuthenticated = localStorage.getItem('token');
+  return isAuthenticated ? <Element {...rest} /> : <Navigate to="/login" replace />;
+};
 
 function App() {
+  const [isAuthChecked, setIsAuthChecked] = useState(false);
+
+  useEffect(() => {
+    const endpoint = 'http://localhost:8000/api/is-authenticated';
+    const token = localStorage.getItem('token');
+    
+    if (token) {
+      axios
+        .get(endpoint, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          const isAuthenticated = response.data.isAuthenticated;
+          console.log(isAuthenticated);
+          setIsAuthChecked(true);
+        })
+        .catch((error) => {
+          console.log('Error al verificar la autenticación:', error);
+          setIsAuthChecked(true);
+        });
+    } else {
+      setIsAuthChecked(true);
+    }
+  }, []);
+
+  if (!isAuthChecked) {
+    return null; // Renderizar un estado de carga o un componente de carga aquí si lo deseas
+  }
+
   return (
     <div className="App">
-     <BrowserRouter>
+      <Router>
         <Routes>
-          <Route path='/' element={<CrudTicket/>} />
+          <Route path="/login" element={<FormLogin />} />
+          <Route path="/register" element={<FormRegister />} />
+          <Route path="/" element={<PrivateRoute element={CrudTicket} />} />
         </Routes>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }

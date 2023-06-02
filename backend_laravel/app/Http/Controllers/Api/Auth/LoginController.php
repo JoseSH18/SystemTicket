@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class LoginController extends Controller
 {
@@ -26,7 +28,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $user->createToken('authToken')->plainTextToken;
+            $token = JWTAuth::fromUser($user);
 
             return response()->json([
                 'user' => $user,
@@ -52,5 +54,31 @@ class LoginController extends Controller
         return response()->json([
             'message' => 'Cierre de sesión exitoso.',
         ]);
+    }
+
+    /**
+     * Verificar la autenticación del usuario.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function isAuthenticated(Request $request)
+    {
+        try {
+            // Verificar el token JWT y obtener el usuario autenticado
+            $user = JWTAuth::parseToken()->authenticate();
+    
+            return response()->json([
+                'isAuthenticated' => true,
+                'user' => $user
+            ]);
+        } catch (\Exception $e) {
+            // Manejar cualquier excepción que ocurra durante la verificación del token
+            var_dump($e->getMessage());
+            return response()->json([
+                'isAuthenticated' => false,
+                'message' => 'Error al verificar la autenticación.'
+            ], 401);
+        }
     }
 }

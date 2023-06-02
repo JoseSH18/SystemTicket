@@ -12,6 +12,7 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Models\File;
 use App\Models\Status;
+use Error;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -39,16 +40,9 @@ class TicketController extends Controller
     
         
         try {
-            $email = 'prueba@prueba.com';
-            $password = '11111111';
-    
-            // Intentar autenticar al usuario
-            $credentials = [
-                'email' => $email,
-                'password' => $password
-            ];
-            if (Auth::attempt($credentials)) {
-                $user = Auth::user();
+            var_dump($user = Auth::user());
+
+                
                 $ticket = new Ticket();
 
                 $priority = Priority::find($request->id_Priority);
@@ -94,10 +88,11 @@ class TicketController extends Controller
                 
                 
               
-            } 
+            
            
         } catch (\Throwable $th) {
-
+            
+    
             return ('api.tickets.index');
         }
         

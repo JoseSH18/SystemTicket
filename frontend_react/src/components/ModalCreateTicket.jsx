@@ -30,24 +30,39 @@ const ModalCreateTicket = ({getAllTickets}) => {
     const [categories, setCategories] = useState([]);
   
     const getAllPriorities = async () =>{
+      const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`${endpoint}/priorities`)
+        const response = await axios.get(`${endpoint}/priorities`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setPriorities(response.data)
       } catch (error) {
         console.error(error)
       }
     }
     const getAllCategories = async () =>{
+      const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`${endpoint}/categories`)
+        const response = await axios.get(`${endpoint}/categories`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setCategories(response.data)
       } catch (error) {
         console.error(error)
       }
     }
     const getAllTags= async () =>{
+      const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`${endpoint}/tags`)
+        const response = await axios.get(`${endpoint}/tags`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setTags(response.data)
       } catch (error) {
         console.error(error)
@@ -55,8 +70,13 @@ const ModalCreateTicket = ({getAllTickets}) => {
     }
   
     const getAllStatuses = async () =>{
+      const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`${endpoint}/statuses`)
+        const response = await axios.get(`${endpoint}/statuses`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setStatuses(response.data)
       } catch (error) {
         console.error(error)
@@ -71,6 +91,7 @@ const ModalCreateTicket = ({getAllTickets}) => {
     }, [])
   
   const store = async (e) =>{
+    const token = localStorage.getItem('token');
     e.preventDefault()
     const formData = new FormData();
     files.forEach((file) => formData.append('file[]', file));
@@ -83,7 +104,8 @@ const ModalCreateTicket = ({getAllTickets}) => {
   
     await axios.post(`${endpoint}/store`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
       }
     });
     handleClose();

@@ -17,7 +17,12 @@ const CrudTicket = () => {
 
   const getAllTickets = async () =>{
     try {
-      const response = await axios.get(`${endpoint}/tickets`)
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${endpoint}/tickets`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setTickets(response.data)
     } catch (error) {
       console.error(error)

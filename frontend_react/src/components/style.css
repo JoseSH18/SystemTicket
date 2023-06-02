@@ -1,0 +1,34 @@
+.background {
+    background-color: #c5e2f9; /* Color celeste de fondo */
+    height: 100vh; /* Cubre toda la altura de la pantalla */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff; /* Color blanco de fondo del contenedor */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra alrededor del contenedor */
+  }
+  
+  .form-container h2 {
+    margin-bottom: 20px;
+  }
+  .group{
+    width: 20vw;
+  }
+  .form-container input{
+    margin-bottom: 2%;
+  }
+  .navbar-brand {
+    margin-right: auto;
+  }
+  
+  .nav-link {
+    margin-left: auto;
+  }

@@ -13,10 +13,15 @@ const ModalAssignTicket = (props) => {
     const [agents, setAgents] = useState([])
 
     const assign = async (e)=>{
+      const token = localStorage.getItem('token');
         e.preventDefault()
         await axios.put(`${endpoint}/assign/${props.AssignObjects.id}`, {
             id_Agent: id_Agent
-        })
+        }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         props.AssignObjects.getAllTickets();
         handleClose();
         navigate('/')
@@ -24,7 +29,12 @@ const ModalAssignTicket = (props) => {
 
     const getAllAgents = async () =>{
         try {
-          const response = await axios.get(`${endpoint}/agents`)
+          const token = localStorage.getItem('token');
+          const response = await axios.get(`${endpoint}/agents`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
           setAgents(response.data)
         } catch (error) {
           console.error(error)

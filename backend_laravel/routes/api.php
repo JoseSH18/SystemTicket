@@ -16,19 +16,18 @@ use App\Http\Controllers\Api\Auth\LoginController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::controller(TicketController::class)->group(function (){
-    Route::get('/tickets', 'index')->name('api.tickets.index');
-    Route::post('/ticket/store', 'store')->name('api.tickets.store');
-    Route::put('/ticket/assign/{id}', 'assign')->name('api.tickets.assign');
-    Route::get('/ticket/priorities', 'getPriorities')->name('api.tickets.priorities');
-    Route::get('/ticket/statuses', 'getStatuses')->name('api.tickets.statuses');
-    Route::get('/ticket/agents', 'getAgents')->name('api.tickets.agents');
-    Route::get('/ticket/tags', 'getTags')->name('api.tickets.tags');
-    Route::get('/ticket/categories', 'getCategories')->name('api.tickets.categories');
+
+Route::middleware('jwt.auth')->group(function () {
+    Route::get('/tickets', [TicketController::class, 'index'])->name('api.tickets.index');
+    Route::post('/ticket/store', [TicketController::class, 'store'])->name('api.tickets.store');
+    Route::put('/ticket/assign/{id}', [TicketController::class, 'assign'])->name('api.tickets.assign');
+    Route::get('/ticket/priorities', [TicketController::class, 'getPriorities'])->name('api.tickets.priorities');
+    Route::get('/ticket/statuses', [TicketController::class, 'getStatuses'])->name('api.tickets.statuses');
+    Route::get('/ticket/agents', [TicketController::class, 'getAgents'])->name('api.tickets.agents');
+    Route::get('/ticket/tags', [TicketController::class, 'getTags'])->name('api.tickets.tags');
+    Route::get('/ticket/categories', [TicketController::class, 'getCategories'])->name('api.tickets.categories');
 });
 Route::post('/register', [RegisterController::class, 'register'])->name('api.auth.register');
 Route::post('/login', [LoginController::class, 'login'])->name('api.auth.login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('api.auth.logout');
+Route::get('/is-authenticated', [LoginController::class, 'isAuthenticated']);
