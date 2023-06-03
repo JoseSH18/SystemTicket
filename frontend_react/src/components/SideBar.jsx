@@ -1,13 +1,26 @@
 import React from 'react'
-import Offcanvas from 'react-bootstrap/Offcanvas';
+import {Offcanvas, Button} from 'react-bootstrap';
 import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
+
 
 const SideBar = () => {
+    const navigate = useNavigate()
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const logout = async (e) => {
+      e.preventDefault();
+      localStorage.removeItem('token');
+          try {
+
+            navigate('/login');
+          } catch (error) {
+            console.error(error);
+          }
+  };
   return (
     <div>
     <Button onClick={handleShow} className='d-flex'>
@@ -18,8 +31,8 @@ const SideBar = () => {
       <Offcanvas.Title>Offcanvas</Offcanvas.Title>
     </Offcanvas.Header>
     <Offcanvas.Body>
-      Some text as placeholder. In real life you can have the elements you
-      have chosen. Like, text, images, lists, etc.
+
+      <Button onClick={logout}>Logout</Button>
     </Offcanvas.Body>
   </Offcanvas>
   </div>

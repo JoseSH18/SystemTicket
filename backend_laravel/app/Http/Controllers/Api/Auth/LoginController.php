@@ -9,6 +9,7 @@ use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
+
 class LoginController extends Controller
 {
     /**
@@ -49,7 +50,11 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $token = $request->user()->currentAccessToken();
+        var_dump($token);
+        if ($token) {
+            $token->delete();
+        }
 
         return response()->json([
             'message' => 'Cierre de sesión exitoso.',
@@ -67,10 +72,12 @@ class LoginController extends Controller
         try {
             // Verificar el token JWT y obtener el usuario autenticado
             $user = JWTAuth::parseToken()->authenticate();
+
     
             return response()->json([
                 'isAuthenticated' => true,
-                'user' => $user
+                'user' => $user,
+                'role' => $user->roles->first()->name,
             ]);
         } catch (\Exception $e) {
             // Manejar cualquier excepción que ocurra durante la verificación del token

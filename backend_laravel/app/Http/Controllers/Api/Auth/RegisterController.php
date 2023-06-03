@@ -39,7 +39,7 @@ class RegisterController extends Controller
             'last_Name' => $request->input('last_Name'),
             'second_Last_Name' => $request->input('second_Last_Name'),
         ]);
-        $user->assignRole($request['role']);
+        $user->assignRole('user');
 
         return response()->json([
             'user' => $user,

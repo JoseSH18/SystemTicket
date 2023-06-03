@@ -26,8 +26,9 @@ Route::middleware('jwt.auth')->group(function () {
     Route::get('/ticket/agents', [TicketController::class, 'getAgents'])->name('api.tickets.agents');
     Route::get('/ticket/tags', [TicketController::class, 'getTags'])->name('api.tickets.tags');
     Route::get('/ticket/categories', [TicketController::class, 'getCategories'])->name('api.tickets.categories');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('api.auth.logout');
 });
 Route::post('/register', [RegisterController::class, 'register'])->name('api.auth.register');
 Route::post('/login', [LoginController::class, 'login'])->name('api.auth.login');
-Route::post('/logout', [LoginController::class, 'logout'])->name('api.auth.logout');
+
 Route::get('/is-authenticated', [LoginController::class, 'isAuthenticated']);

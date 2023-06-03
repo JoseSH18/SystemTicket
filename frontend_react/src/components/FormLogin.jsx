@@ -3,7 +3,6 @@ import { Navbar, Nav, Container, Form, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./style.css"; 
-import jwt_decode from 'jwt-decode';
 
 
 
@@ -23,14 +22,12 @@ const FormLogin = () => {
           });
   
           const token = response.data.token;
-          const decodedToken = jwt_decode(token);
   
           // Aquí puedes guardar el token de acceso en el almacenamiento local o en las cookies
           // Ejemplo utilizando el almacenamiento local:
           localStorage.setItem('token', token);
-          localStorage.setItem('user', JSON.stringify(decodedToken));
+
   
-          console.log(decodedToken); // Manejar la respuesta del servidor según tus necesidades
   
           // Redireccionar al usuario a la página deseada después del inicio de sesión exitoso
           navigate('/');
