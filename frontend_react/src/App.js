@@ -33,10 +33,23 @@ function App() {
         .catch((error) => {
           console.log('Error al verificar la autenticación:', error);
           setIsAuthChecked(true);
+           localStorage.removeItem('token')
         });
     } else {
       setIsAuthChecked(true);
+       localStorage.removeItem('token')
     }
+  }, []);
+    useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.removeItem('token'); // Eliminar el token del localStorage al cerrar la aplicación
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
   }, []);
 
   if (!isAuthChecked) {

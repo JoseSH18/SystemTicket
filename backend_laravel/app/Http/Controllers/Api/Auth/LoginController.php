@@ -81,7 +81,6 @@ class LoginController extends Controller
             ]);
         } catch (\Exception $e) {
             // Manejar cualquier excepción que ocurra durante la verificación del token
-            var_dump($e->getMessage());
             return response()->json([
                 'isAuthenticated' => false,
                 'message' => 'Error al verificar la autenticación.'
