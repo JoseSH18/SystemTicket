@@ -4,11 +4,18 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import CrudTicket from './components/CrudTicket.jsx';
 import { FormRegister } from './components/FormRegister';
 import FormLogin from './components/FormLogin';
+import ModalEditTicket from './components/ModalEditTicket';
 import axios from 'axios';
 
 const PrivateRoute = ({ element: Element, ...rest }) => {
   const isAuthenticated = localStorage.getItem('token');
-  return isAuthenticated ? <Element {...rest} /> : <Navigate to="/login" replace />;
+  const role = localStorage.getItem('role'); 
+
+  if (isAuthenticated && (role === 'User' || role === 'Agent')) {
+    return <Element {...rest} />;
+  } else {
+    return <Navigate to="/login" replace />;
+  }
 };
 
 function App() {
@@ -27,26 +34,34 @@ function App() {
         })
         .then((response) => {
           const isAuthenticated = response.data.isAuthenticated;
-          console.log(isAuthenticated);
+           const role = response.data.role; // Obtener el rol del usuario
+            console.log(isAuthenticated);
+            console.log(role); 
           setIsAuthChecked(true);
         })
         .catch((error) => {
           console.log('Error al verificar la autenticación:', error);
           setIsAuthChecked(true);
            localStorage.removeItem('token')
+           localStorage.removeItem('role')
         });
     } else {
       setIsAuthChecked(true);
        localStorage.removeItem('token')
+       localStorage.removeItem('role')
     }
   }, []);
-    useEffect(() => {
-    const handleBeforeUnload = () => {
-      localStorage.removeItem('token'); // Eliminar el token del localStorage al cerrar la aplicación
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      // Verificar si el evento beforeunload se debe al cierre de la aplicación
+      if (event.clientY < 0) {
+        localStorage.removeItem('token'); // Eliminar el token del localStorage al cerrar la aplicación
+        localStorage.removeItem('role')
+      }
     };
-
+  
     window.addEventListener('beforeunload', handleBeforeUnload);
-
+  
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
@@ -63,6 +78,7 @@ function App() {
           <Route path="/login" element={<FormLogin />} />
           <Route path="/register" element={<FormRegister />} />
           <Route path="/" element={<PrivateRoute element={CrudTicket} />} />
+          <Route path="/edit/:id" element={<PrivateRoute element={ModalEditTicket} />} />
         </Routes>
       </Router>
     </div>

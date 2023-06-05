@@ -1,12 +1,12 @@
 import axios from 'axios'
 import React, {useEffect, useState} from 'react'
-import { useNavigate } from 'react-router-dom'
-import {Button, Form, Modal} from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom'
+import {Button, Form, Modal, Card} from 'react-bootstrap';
 
 
 
 const endpoint = 'http://localhost:8000/api/ticket'
-const ModalCreateTicket = ({getAllTickets}) => {
+const ModalEditTicket = () => {
 
     const [title, setTitle] = useState('')
     const [text_Description, setText_Description] = useState('')
@@ -14,7 +14,7 @@ const ModalCreateTicket = ({getAllTickets}) => {
     const [id_Status, setId_Status] = useState(0)
     const [ids_Categories, setIds_Cateogories] = useState([]);
     const [ids_Tags, setIds_Tags] = useState([]);
-
+    const {id} = useParams()
     const [files, setFiles] = useState([]);
 
 
@@ -82,15 +82,33 @@ const ModalCreateTicket = ({getAllTickets}) => {
         console.error(error)
       }
     }
+    useEffect( () =>{
+        const getProducyById = async () =>{
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`${endpoint}/get/${id}`, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+            setTitle(response.data.title)
+            setText_Description(response.data.text_Description)
+            setId_Priority(response.data.id_Priority)
+            setId_Status(response.data.id_Status)
+            setIds_Cateogories(response.data.ids_Cateogories)
+            setIds_Tags(response.data.ids_Tags)
+            console.log(response.data)
+            setFiles(response.data.files)
 
-    useEffect ( ()=>{
+        }
+        getProducyById()
         getAllPriorities();
         getAllStatuses();
         getAllCategories();
         getAllTags();
+        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
   
-  const store = async (e) =>{
+  const update = async (e) =>{
     const token = localStorage.getItem('token');
     e.preventDefault()
     const formData = new FormData();
@@ -102,14 +120,13 @@ const ModalCreateTicket = ({getAllTickets}) => {
     formData.append('id_Priority', id_Priority); 
     formData.append('id_Status', id_Status); 
   
-    await axios.post(`${endpoint}/store`, formData, {
+    await axios.post(`${endpoint}/update`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
       }
     });
     handleClose();
-    getAllTickets()
     setFiles([]);
     setTitle('');
     setText_Description('');
@@ -127,12 +144,12 @@ const ModalCreateTicket = ({getAllTickets}) => {
     const handleShow = () => setShow(true);
   return (
     <>
-    <Button variant="primary" onClick={handleShow}>
+    <Button variant="link" className="dropdown-item" onClick={handleShow}>
       Crear Ticket
     </Button>
 
     <Modal show={show} onHide={handleClose}>
-    <Form onSubmit={store}>
+    <Form onSubmit={update}>
       <Modal.Header closeButton>
         <Modal.Title>Crear Ticket</Modal.Title>
       </Modal.Header>
@@ -181,6 +198,15 @@ const ModalCreateTicket = ({getAllTickets}) => {
       required 
     />
   </Form.Group>
+  {files.map((file) => (
+  <Card key={file.id} className="mb-3">
+    <Card.Body>
+      <a href={file.file} target="_blank" rel="noopener noreferrer">
+        Ver archivo
+      </a>
+    </Card.Body>
+  </Card>
+))}
   <Form.Group controlId="formFile">
         <Form.Label>Seleccionar archivo</Form.Label>
         <Form.Control type="file" multiple onChange={handleFileChange}  />
@@ -221,4 +247,4 @@ const ModalCreateTicket = ({getAllTickets}) => {
   )
 }
 
-export default ModalCreateTicket
+export default ModalEditTicket

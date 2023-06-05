@@ -14,6 +14,7 @@ const SideBar = () => {
     const logout = async (e) => {
       e.preventDefault();
       localStorage.removeItem('token');
+      localStorage.removeItem('role');
           try {
 
             navigate('/login');

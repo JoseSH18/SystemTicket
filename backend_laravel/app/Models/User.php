@@ -66,5 +66,4 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Ticket::class, 'id_Agent');
     }
 
-    // Relación muchos a uno con el modelo Rol
 }

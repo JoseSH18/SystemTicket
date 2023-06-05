@@ -22,10 +22,12 @@ const FormLogin = () => {
           });
   
           const token = response.data.token;
+          const role = response.data.role;
   
           // Aquí puedes guardar el token de acceso en el almacenamiento local o en las cookies
           // Ejemplo utilizando el almacenamiento local:
           localStorage.setItem('token', token);
+          localStorage.setItem('role', role);
 
   
   

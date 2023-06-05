@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->binary('file');
+            $table->string('file');
             $table->unsignedBigInteger('id_Ticket');
             $table->timestamps();
 
