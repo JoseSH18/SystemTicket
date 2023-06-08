@@ -3,8 +3,8 @@ import Table from 'react-bootstrap/Table';
 import NavBar from './NavBar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import ModalAssignTicket from './ModalAssignTicket';
+import ModalEditTicket from './ModalEditTicket';
 
-import {Link} from 'react-router-dom'
 
 import {useEffect, useState} from 'react'
 import axios from 'axios'
@@ -109,9 +109,7 @@ const CrudTicket = () => {
   return (
     <div>   
 <NavBar getAllTickets={getAllTickets}/>
-<Link to={`/edit/${17}`}>
-                                  edit
-                                </Link>
+
     <Table striped bordered hover size="sm">
     <thead>
       <tr>
@@ -170,7 +168,9 @@ const CrudTicket = () => {
                             {role === "Admin" ? (
                                <NavDropdown.Item href="#action3"><ModalAssignTicket AssignObjects={{id: ticket.id, getAllTickets: getAllTickets}}/></NavDropdown.Item>
                               ) : null}
-
+                              {role === "Admin" || role === "Agent" ? (
+                               <NavDropdown.Item href="#action3"><ModalEditTicket id={ticket.id}/></NavDropdown.Item>
+                              ) : null}
                             <NavDropdown.Item href="#action5">
                               Detalle
                             </NavDropdown.Item>

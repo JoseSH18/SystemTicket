@@ -32,11 +32,8 @@ function App() {
             Authorization: `Bearer ${token}`,
           },
         })
-        .then((response) => {
-          const isAuthenticated = response.data.isAuthenticated;
-           const role = response.data.role; // Obtener el rol del usuario
-            console.log(isAuthenticated);
-            console.log(role); 
+        .then(() => {
+
           setIsAuthChecked(true);
         })
         .catch((error) => {

@@ -14,6 +14,7 @@ use App\Models\File;
 use App\Models\Status;
 use Error;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 class TicketController extends Controller
@@ -84,19 +85,17 @@ class TicketController extends Controller
                     
                 }
 
-            
-
-                
+        
                 
                 if ($request->hasFile('file')) {
                     $files = $request->file('file');
                 
                     foreach ($files as $fieldName => $file) {
                         $path = $file->store('public/files');
-                        
+                
                         $uploadedFile = new File();
-                        $uploadedFile->file = $path;
-                        
+                        $uploadedFile->file = basename($path); // Obtener solo el nombre del archivo
+                
                         $ticket->files()->save($uploadedFile);
                     }
                 }
@@ -113,37 +112,30 @@ class TicketController extends Controller
         
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
 
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|max:30',
-            'id_Priority' => 'required|numeric',
-            'id_Status' => 'required|numeric',
-            'text_Description' => 'required|max:100',
-        ]);
-    
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+ 
     
         
         try {
 
-                $user = Auth::user();
-                $ticket = new Ticket();
+                $ticket = Ticket::findOrFail($id);
 
-                $priority = Priority::find($request->id_Priority);
-                $status = Status::find($request->id_Status);
+
+                $priority = ($request->id_Priority) ? Priority::find($request->id_Priority) : null;
+                $ticket->priority()->associate($priority);
+                $status = ($request->id_Status) ? Status::find($request->id_Status) : null;
+                $ticket->status()->associate($status);
+            
 
                 $ticket->title = $request->title;
                 $ticket->text_Description = $request->text_Description;
-                $ticket->priority()->associate( $priority);
-                $ticket->status()->associate($status);
-                $ticket->user()->associate($user);
                 $ticket->save();
                 $idsCategories = $request->input('ids_Categories', []);
                 $idsTags = $request->input('ids_Tags', []);
+                $ticket->categories()->detach();
+                $ticket->tags()->detach();
                 foreach ($idsCategories as $categoryId) {
                     
       
@@ -160,18 +152,46 @@ class TicketController extends Controller
                 }
 
             
-
+                if (empty($request->oldFiles)) {
+                    // Obtener los IDs de todos los archivos asociados al ticket
+                    $ticketFileIds = $ticket->files()->pluck('id')->toArray();
                 
+                    // Eliminar los archivos asociados al ticket
+                    $ticket->files()->delete();
                 
+                    // Eliminar los archivos físicos del storage
+                    foreach ($ticketFileIds as $fileId) {
+                        $file = File::find($fileId);
+                    
+                        if ($file) {
+                            Storage::delete($file->file);
+                        }
+                    }
+                } else {
+                    // El código existente para eliminar archivos relacionados con `$request->oldFiles`
+                    $oldFileIds = array_map(function($file) {
+                        return $file['id'];
+                    }, $request->oldFiles);
+                    $ticketFileIds = $ticket->files()->pluck('id')->toArray();
+                    $filesToDelete = array_diff($ticketFileIds, $oldFileIds);
+                    $ticket->files()->whereIn('id', $filesToDelete)->delete();
+                    foreach ($filesToDelete as $fileId) {
+                        $file = File::find($fileId);
+                    
+                        if ($file) {
+                            Storage::delete($file->file);
+                        }
+                    }
+                }
                 if ($request->hasFile('file')) {
                     $files = $request->file('file');
                 
                     foreach ($files as $fieldName => $file) {
                         $path = $file->store('public/files');
-                        
+                
                         $uploadedFile = new File();
-                        $uploadedFile->file = $path;
-                        
+                        $uploadedFile->file = basename($path); // Obtener solo el nombre del archivo
+                
                         $ticket->files()->save($uploadedFile);
                     }
                 }
@@ -182,8 +202,8 @@ class TicketController extends Controller
            
         } catch (\Throwable $th) {
             
-    
-            return ('api.tickets.index');
+            var_dump($th->getMessage());
+            return redirect()->back()->withErrors($th)->withInput();
         }
         
     }

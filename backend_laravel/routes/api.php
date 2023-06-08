@@ -20,7 +20,7 @@ use App\Http\Controllers\Api\Auth\LoginController;
 Route::middleware('jwt.auth')->group(function () {
     Route::get('/tickets', [TicketController::class, 'index'])->name('api.tickets.index');
     Route::post('/ticket/store', [TicketController::class, 'store'])->name('api.tickets.store');
-    Route::put('/ticket/update', [TicketController::class, 'update'])->name('api.tickets.update');
+    Route::post('/ticket/update/{id}', [TicketController::class, 'update'])->name('api.tickets.update');
     Route::get('/ticket/get/{id}', [TicketController::class, 'ticketById'])->name('api.tickets.ticketById');
     Route::put('/ticket/assign/{id}', [TicketController::class, 'assign'])->name('api.tickets.assign');
     Route::get('/ticket/priorities', [TicketController::class, 'getPriorities'])->name('api.tickets.priorities');
