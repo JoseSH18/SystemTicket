@@ -40,9 +40,8 @@ function App() {
           console.log('Error al verificar la autenticación:', error);
           setIsAuthChecked(true);
            localStorage.removeItem('token')
-           localStorage.removeItem('role')
-           alert('El token es inválido');
-           <Navigate to="/login" replace />;
+           localStorage.removeItem('role');
+           <Navigate to="/login" replace />
            window.location.reload();
         });
     } else {
