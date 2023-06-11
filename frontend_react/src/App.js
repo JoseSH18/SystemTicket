@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import CrudTicket from './components/CrudTicket.jsx';
 import { FormRegister } from './components/FormRegister';
 import FormLogin from './components/FormLogin';
-import ModalEditTicket from './components/ModalEditTicket';
+import TicketDetail from './components/TicketDetail';
 import axios from 'axios';
 
 const PrivateRoute = ({ element: Element, ...rest }) => {
@@ -41,6 +41,9 @@ function App() {
           setIsAuthChecked(true);
            localStorage.removeItem('token')
            localStorage.removeItem('role')
+           alert('El token es inválido');
+           <Navigate to="/login" replace />;
+           window.location.reload();
         });
     } else {
       setIsAuthChecked(true);
@@ -75,7 +78,7 @@ function App() {
           <Route path="/login" element={<FormLogin />} />
           <Route path="/register" element={<FormRegister />} />
           <Route path="/" element={<PrivateRoute element={CrudTicket} />} />
-          <Route path="/edit/:id" element={<PrivateRoute element={ModalEditTicket} />} />
+          <Route path="/detail/:id" element={<PrivateRoute element={TicketDetail} />} />
         </Routes>
       </Router>
     </div>

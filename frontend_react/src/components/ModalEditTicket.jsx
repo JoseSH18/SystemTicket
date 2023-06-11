@@ -85,7 +85,7 @@ const ModalEditTicket = ({id}) => {
       }
     }
     useEffect( () =>{
-        const getProducyById = async () =>{
+        const getTicketById = async () =>{
             const token = localStorage.getItem('token');
             const response = await axios.get(`${endpoint}/get/${id}`, {
                 headers: {
@@ -102,7 +102,7 @@ const ModalEditTicket = ({id}) => {
             setOldFiles(response.data.files)
 
         }
-        getProducyById()
+        getTicketById()
         getAllPriorities();
         getAllStatuses();
         getAllCategories();
@@ -117,7 +117,7 @@ const ModalEditTicket = ({id}) => {
     files.forEach((file) => formData.append('file[]', file));
     ids_Categories.forEach((categoryId) => formData.append('ids_Categories[]', categoryId));
     ids_Tags.forEach((tagId) => formData.append('ids_Tags[]', tagId));
-    oldFiles.forEach((oldfile) => formData.append('oldFiles[]', oldfile));
+    oldFiles.forEach((oldfile) => formData.append('oldFiles[]', oldfile.id));
     formData.append('title', title); 
     formData.append('text_Description', text_Description);
     formData.append('id_Priority', id_Priority); 
@@ -205,15 +205,15 @@ const ModalEditTicket = ({id}) => {
   </Form.Group>
   {oldFiles.map((file) => (
       <Card key={file.id} className="mb-3">
-        <Card.Body>
-          <a href={`http://127.0.0.1:8000/storage/${file.file}`} target="_blank" rel="noopener noreferrer">
-            Ver archivo
-          </a>
-          <Button variant="danger" onClick={() => removeFile(file.id)}>
-            Eliminar
-          </Button>
-        </Card.Body>
-      </Card>
+    <Card.Body>
+      <Card.Link href={`http://127.0.0.1:8000/storage/${file.file}`} target="_blank" rel="noopener noreferrer">
+        Ver archivo
+      </Card.Link>
+      <Button variant="danger" onClick={() => removeFile(file.id)}>
+        Eliminar
+      </Button>
+    </Card.Body>
+  </Card>
     ))}
   <Form.Group controlId="formFile">
         <Form.Label>Seleccionar archivo</Form.Label>

@@ -18,17 +18,18 @@ use App\Http\Controllers\Api\Auth\LoginController;
 
 
 Route::middleware('jwt.auth')->group(function () {
-    Route::get('/tickets', [TicketController::class, 'index'])->name('api.tickets.index');
-    Route::post('/ticket/store', [TicketController::class, 'store'])->name('api.tickets.store');
-    Route::post('/ticket/update/{id}', [TicketController::class, 'update'])->name('api.tickets.update');
-    Route::get('/ticket/get/{id}', [TicketController::class, 'ticketById'])->name('api.tickets.ticketById');
-    Route::put('/ticket/assign/{id}', [TicketController::class, 'assign'])->name('api.tickets.assign');
-    Route::get('/ticket/priorities', [TicketController::class, 'getPriorities'])->name('api.tickets.priorities');
-    Route::get('/ticket/statuses', [TicketController::class, 'getStatuses'])->name('api.tickets.statuses');
-    Route::get('/ticket/agents', [TicketController::class, 'getAgents'])->name('api.tickets.agents');
-    Route::get('/ticket/tags', [TicketController::class, 'getTags'])->name('api.tickets.tags');
-    Route::get('/ticket/categories', [TicketController::class, 'getCategories'])->name('api.tickets.categories');
-    Route::post('/logout', [LoginController::class, 'logout'])->name('api.auth.logout');
+    Route::get('/tickets', [TicketController::class, 'index'])->name('api.tickets.index')->middleware('can:api.tickets.index');
+    Route::post('/ticket/store', [TicketController::class, 'store'])->name('api.tickets.store')->middleware('can:api.tickets.store');
+    Route::post('/ticket/update/{id}', [TicketController::class, 'update'])->name('api.tickets.update')->middleware('can:api.tickets.update');
+    Route::get('/ticket/get/{id}', [TicketController::class, 'ticketById'])->name('api.tickets.ticketById')->middleware('can:api.tickets.ticketById');
+    Route::put('/ticket/assign/{id}', [TicketController::class, 'assign'])->name('api.tickets.assign')->middleware('can:api.tickets.assign');
+    Route::get('/ticket/priorities', [TicketController::class, 'getPriorities'])->name('api.tickets.priorities')->middleware('can:api.tickets.priorities');
+    Route::get('/ticket/statuses', [TicketController::class, 'getStatuses'])->name('api.tickets.statuses')->middleware('can:api.tickets.statuses');
+    Route::get('/ticket/agents', [TicketController::class, 'getAgents'])->name('api.tickets.agents')->middleware('can:api.tickets.agents');
+    Route::get('/ticket/tags', [TicketController::class, 'getTags'])->name('api.tickets.tags')->middleware('can:api.tickets.tags');
+    Route::get('/ticket/categories', [TicketController::class, 'getCategories'])->name('api.tickets.categories')->middleware('can:api.tickets.categories');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('api.auth.logout')->middleware('can:api.auth.logout');
+    Route::post('/ticket/addComment', [TicketController::class, 'addComment'])->name('api.tickets.addComment');
 });
 Route::post('/register', [RegisterController::class, 'register'])->name('api.auth.register');
 Route::post('/login', [LoginController::class, 'login'])->name('api.auth.login');

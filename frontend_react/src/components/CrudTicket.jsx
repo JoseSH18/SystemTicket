@@ -4,6 +4,7 @@ import NavBar from './NavBar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import ModalAssignTicket from './ModalAssignTicket';
 import ModalEditTicket from './ModalEditTicket';
+import {Link} from 'react-router-dom'
 
 
 import {useEffect, useState} from 'react'
@@ -35,6 +36,7 @@ const CrudTicket = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      
       setTickets(response.data)
     } catch (error) {
       console.error(error)
@@ -171,9 +173,9 @@ const CrudTicket = () => {
                               {role === "Admin" || role === "Agent" ? (
                                <NavDropdown.Item href="#action3"><ModalEditTicket id={ticket.id}/></NavDropdown.Item>
                               ) : null}
-                            <NavDropdown.Item href="#action5">
-                              Detalle
-                            </NavDropdown.Item>
+                            {role === "User" || role === "Agent" ? (
+                               <NavDropdown.Item href="#action3"><Link variant="link" className="dropdown-item" to={`/detail/${ticket.id}`}>Detalle</Link></NavDropdown.Item>
+                              ) : null}
                             {role === "Admin" ? (
                                 <NavDropdown.Item href="#action4">
                                   Eliminar

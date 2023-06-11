@@ -12,6 +12,7 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Models\File;
 use App\Models\Status;
+use App\Models\Comment;
 use Error;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -151,8 +152,9 @@ class TicketController extends Controller
                     
                 }
 
-            
-                if (empty($request->oldFiles)) {
+                $oldFileIds = $request->input('oldFiles', []);
+                
+                if (empty($oldFileIds)) {
                     // Obtener los IDs de todos los archivos asociados al ticket
                     $ticketFileIds = $ticket->files()->pluck('id')->toArray();
                 
@@ -169,11 +171,9 @@ class TicketController extends Controller
                     }
                 } else {
                     // El código existente para eliminar archivos relacionados con `$request->oldFiles`
-                    $oldFileIds = array_map(function($file) {
-                        return $file['id'];
-                    }, $request->oldFiles);
                     $ticketFileIds = $ticket->files()->pluck('id')->toArray();
                     $filesToDelete = array_diff($ticketFileIds, $oldFileIds);
+                    var_dump($filesToDelete);
                     $ticket->files()->whereIn('id', $filesToDelete)->delete();
                     foreach ($filesToDelete as $fileId) {
                         $file = File::find($fileId);
@@ -210,7 +210,7 @@ class TicketController extends Controller
 
     public function ticketById(string $id)
     {
-        $ticket = Ticket::with('user', 'agent', 'priority', 'status', 'categories', 'tags', 'files')
+        $ticket = Ticket::with('user', 'agent', 'priority', 'status', 'categories', 'tags', 'files', 'comments')
         ->find($id);
         return $ticket;
     }
@@ -251,5 +251,18 @@ class TicketController extends Controller
     {
         $tags = Tag::All();
         return $tags;
+    }
+    public function addComment(Request $request)
+    {
+        $user = Auth::user();
+        $comment = new Comment();
+        $ticket = Ticket::findOrFail($request->id_Ticket);
+
+        $comment->comment = $request->comment;
+        $comment->id_Ticket = $request->id_Ticket;
+        $comment->author = $user->name . ' ' . $user->last_Name . ' ' . $user->second_Last_Name;
+        $ticket->comments()->save($comment);
+
+        return $ticket;
     }
 }

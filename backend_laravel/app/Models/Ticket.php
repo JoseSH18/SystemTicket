@@ -36,6 +36,10 @@ class Ticket extends Model
     {
         return $this->hasMany(File::class, 'id_Ticket');
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'id_Ticket');
+    }
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_ticket', 'id_Ticket', 'id_Category');
