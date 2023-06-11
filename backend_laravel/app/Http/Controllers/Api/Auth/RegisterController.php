@@ -18,6 +18,7 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+        
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:30',
             'email' => 'required|string|email|max:50|unique:users',
@@ -40,7 +41,7 @@ class RegisterController extends Controller
             'last_Name' => $request->input('last_Name'),
             'second_Last_Name' => $request->input('second_Last_Name'),
         ]);
-        $user->assignRole('user');
+        $user->assignRole('User');
 
         return response()->json([
             'user' => $user,

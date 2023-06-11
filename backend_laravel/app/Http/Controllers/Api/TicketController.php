@@ -42,6 +42,7 @@ class TicketController extends Controller
 
     public function store(Request $request)
     {
+        
 
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:30',

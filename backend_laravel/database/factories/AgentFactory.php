@@ -3,13 +3,12 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
-class UserFactory extends Factory
+class AgentFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -28,21 +27,20 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
         ];
     }
+
     public function configure()
     {
-        return $this->afterCreating(function (User $user) {
-            $user->assignRole('User');
+        return $this->afterCreating(function (User $agent) {
+            $agent->assignRole('Agent');
         });
     }
 
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
+    public function isAgent(): Factory
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+    return $this->state(function () {
+        return [
+            'role' => 'Agent',
+        ];
+    });
     }
 }
