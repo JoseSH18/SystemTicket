@@ -29,7 +29,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::get('/ticket/tags', [TicketController::class, 'getTags'])->name('api.tickets.tags')->middleware('can:api.tickets.tags');
     Route::get('/ticket/categories', [TicketController::class, 'getCategories'])->name('api.tickets.categories')->middleware('can:api.tickets.categories');
     Route::post('/logout', [LoginController::class, 'logout'])->name('api.auth.logout')->middleware('can:api.auth.logout');
-    Route::post('/ticket/addComment', [TicketController::class, 'addComment'])->name('api.tickets.addComment');
+    Route::post('/ticket/addComment', [TicketController::class, 'addComment'])->name('api.tickets.addComment')->middleware('can:api.tickets.addComment');
 });
 Route::post('/register', [RegisterController::class, 'register'])->name('api.auth.register');
 Route::post('/login', [LoginController::class, 'login'])->name('api.auth.login');

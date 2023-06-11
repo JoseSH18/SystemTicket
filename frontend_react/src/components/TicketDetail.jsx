@@ -3,12 +3,13 @@ import { Container, Row, Col, Table, Form, Button, Card } from 'react-bootstrap'
 import {useParams } from 'react-router-dom';
 import axios from 'axios';
 import {Link} from 'react-router-dom'
+import Loading from './loading';
 
 const endpoint = 'http://localhost:8000/api/ticket';
 
 const TicketDetail = () => {
   const [comment, setComment] = useState('');
-  const [ticket, setTicket] = useState({});
+  const [ticket, setTicket] = useState(null);
   const { id } = useParams();
 
 
@@ -46,12 +47,14 @@ const TicketDetail = () => {
 
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  if (!ticket) {
+    return <Loading />
+    }
   return (
     <Container>
       <Row>
         <Col>
-        <Link to={`/`} variant="link" className='d-flex'>Home</Link>
+        <Link to={`/`} variant="link" className='d-flex'>&larr; Home</Link>
           <h1>Ticket Detail</h1>
         </Col>
       </Row>
@@ -99,24 +102,28 @@ const TicketDetail = () => {
                 <td>Tags:</td>
                 <td>{ticket.tags && ticket.tags.map((tag) => tag.tag).join(', ')}</td>
               </tr>
-              <tr>
-              
-                <td>Files:</td>
-                {ticket.files && ticket.files.map((file) => (
-                <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
-                <td>
-                <Card key={file.id} className="mb-3">
-                    <Card.Body>
-                    <a href={`http://127.0.0.1:8000/storage/${file.file}`} target="_blank" rel="noopener noreferrer">
-                        Ver archivo
-                    </a>
-                    </Card.Body>
-                </Card>
-                </td>
-                </div>
-                 ))}
-                
-              </tr>
+              <tr style={{ overflowY: 'auto', maxHeight: '5px' }}>
+                    <td>Files:</td>
+                  <td colSpan={2}> {/* Asegúrate de ajustar el colSpan según el número de columnas de la tabla */}
+                    <div style={{ display: 'flex' }}>
+                      {ticket.files &&
+                        ticket.files.map((file) => (
+                          <Card key={file.id} className="mb-3">
+                            <Card.Body>
+                              <a
+                                href={`http://127.0.0.1:8000/storage/${file.file}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Ver archivo
+                              </a>
+                            </Card.Body>
+                          </Card>
+                        ))}
+                    </div>
+                  </td>
+                </tr>
+
             </tbody>
           </Table>
         </Col>
@@ -136,17 +143,17 @@ const TicketDetail = () => {
       <Row>
         
         <Col>
-          <h2>Comments</h2>
+        <h2>Comentarios</h2>
           <div style={{ overflowY: 'auto', maxHeight: '200px' }}>
           {ticket.comments &&
-            ticket.comments.map((comment, index) => (
-              <div key={index}>
+            ticket.comments.map((comment) => (
+              <div key={comment.id}>
                 <p>{comment.comment}</p>
                 <p>Hecho por: {comment.author}</p>
                 <hr />
               </div>
             ))}
-            </div>
+          </div>
         </Col>
         
       </Row>

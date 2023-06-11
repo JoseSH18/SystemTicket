@@ -40,6 +40,7 @@ class LoginController extends Controller
 
         throw ValidationException::withMessages([
             'email' => ['Las credenciales son incorrectas.'],
+            'password' => ['Las credenciales son incorrectas.'],
         ]);
     }
 

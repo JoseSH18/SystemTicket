@@ -48,6 +48,8 @@ class rolseeder extends Seeder
         $permissionTicketCategories->syncRoles([$role1, $role2, $role3]);
         $permissionLogout = Permission::firstOrCreate(['name' => 'api.auth.logout']);
         $permissionLogout->syncRoles([$role1, $role2, $role3]);
+        $permissionComment = Permission::firstOrCreate(['name' => 'api.tickets.addComment']);
+        $permissionComment->syncRoles([$role1, $role2, $role3]);
 
     }
 }

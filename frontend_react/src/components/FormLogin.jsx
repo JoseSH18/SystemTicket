@@ -8,6 +8,7 @@ import "./style.css";
 
 const endpoint = 'http://localhost:8000/api/login'
 const FormLogin = () => {
+  const [errors, setErrors] = useState({});
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
@@ -16,27 +17,33 @@ const FormLogin = () => {
       e.preventDefault();
   
       try {
-          const response = await axios.post(endpoint, {
-              email: email,
-              password: password,
-          });
+        const response = await axios.post(endpoint, {
+          email: email,
+          password: password,
+        });
   
-          const token = response.data.token;
-          const role = response.data.role;
+        const token = response.data.token;
+        const role = response.data.role;
   
-          // Aquí puedes guardar el token de acceso en el almacenamiento local o en las cookies
-          // Ejemplo utilizando el almacenamiento local:
-          localStorage.setItem('token', token);
-          localStorage.setItem('role', role);
+        // Aquí puedes guardar el token de acceso en el almacenamiento local o en las cookies
+        // Ejemplo utilizando el almacenamiento local:
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', role);
+  
 
-  
-  
-          // Redireccionar al usuario a la página deseada después del inicio de sesión exitoso
-          navigate('/');
+        // Redireccionar al usuario a la página deseada después del inicio de sesión exitoso
+        navigate('/');
+        window.location.reload();
       } catch (error) {
-          console.error(error.response.data); // Manejar el error de autenticación según tus necesidades
+        if (error.response && error.response.status === 422) {
+          const validationErrors = error.response.data.errors;
+          setErrors(validationErrors);
+        } else {
+          // Manejo de otros tipos de errores, como credenciales incorrectas
+          console.error(error);
+        }
       }
-  };
+    };
   return (
     <div>
       <Navbar bg="light" expand="lg">
@@ -62,6 +69,7 @@ const FormLogin = () => {
               onChange={e => setEmail(e.target.value)}
               required
             />
+             {errors.email && <Form.Text className="text-danger">{errors.email[0]}</Form.Text>}
             </Form.Group>
 
             <Form.Group controlId="formPassword">
@@ -74,6 +82,7 @@ const FormLogin = () => {
               onChange={e => setPassword(e.target.value)}
               required
             />
+            {errors.password && <Form.Text className="text-danger">{errors.password[0]}</Form.Text>}
             </Form.Group>
 
             <Button variant="primary" type="submit">

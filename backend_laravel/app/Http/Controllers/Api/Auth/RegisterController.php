@@ -19,11 +19,11 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name' => 'required|string|max:30',
+            'email' => 'required|string|email|max:50|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'last_Name' => 'required|string|max:255',
-            'second_Last_Name' => 'required|string|max:255',
+            'last_Name' => 'required|string|max:30',
+            'second_Last_Name' => 'required|string|max:30',
         ]);
 
         if ($validator->fails()) {
@@ -31,6 +31,7 @@ class RegisterController extends Controller
                 'errors' => $validator->errors(),
             ], 422);
         }
+        
 
         $user = User::create([
             'name' => $request->input('name'),

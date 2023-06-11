@@ -4,7 +4,7 @@ import NavBar from './NavBar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import ModalAssignTicket from './ModalAssignTicket';
 import ModalEditTicket from './ModalEditTicket';
-import {Link} from 'react-router-dom'
+import Loading from './loading';
 
 
 import {useEffect, useState} from 'react'
@@ -107,7 +107,15 @@ const CrudTicket = () => {
         return statusMatch && priorityMatch && categoryMatch;
       })
     : tickets;
-  
+    if (tickets.length === 0) {
+      
+      return(
+      <>
+  <NavBar getAllTickets={getAllTickets} />
+  <Loading />
+</>
+)
+      }
   return (
     <div>   
 <NavBar getAllTickets={getAllTickets}/>
@@ -173,8 +181,10 @@ const CrudTicket = () => {
                               {role === "Admin" || role === "Agent" ? (
                                <NavDropdown.Item href="#action3"><ModalEditTicket id={ticket.id}/></NavDropdown.Item>
                               ) : null}
-                            {role === "User" || role === "Agent" ? (
-                               <NavDropdown.Item href="#action3"><Link variant="link" className="dropdown-item" to={`/detail/${ticket.id}`}>Detalle</Link></NavDropdown.Item>
+                              {role === "User" || role === "Agent" ? (
+                
+                                  <NavDropdown.Item href={`/detail/${ticket.id}`}>Detalle</NavDropdown.Item>
+
                               ) : null}
                             {role === "Admin" ? (
                                 <NavDropdown.Item href="#action4">

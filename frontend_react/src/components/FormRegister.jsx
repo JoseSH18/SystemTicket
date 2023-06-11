@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 const endpoint = 'http://localhost:8000/api/register'
 export const FormRegister = () => {
+  const [errors, setErrors] = useState({});
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -18,7 +19,18 @@ export const FormRegister = () => {
     e.preventDefault()
     await axios.post(endpoint, {name: name, email: email, password: password, password_confirmation: password_confirmation
         , last_Name: last_Name ,second_Last_Name: second_Last_Name})
-    navigate('/')
+        .then(() => {
+          navigate('/')
+        })
+        .catch(error => {
+          if (error.response && error.response.status === 422) {
+            const errors = error.response.data.errors;
+            setErrors(errors);
+          } else {
+            // Manejo de otros tipos de errores
+          }
+        });
+    
   }
   return (
     <div>
@@ -45,6 +57,7 @@ export const FormRegister = () => {
               onChange={e => setEmail(e.target.value)}
               required
             />
+            {errors.email && <span className="error text-danger">{errors.email[0]}</span>}
           </Form.Group>
 
           <Form.Group controlId="formBasicName" className="group">
@@ -56,6 +69,7 @@ export const FormRegister = () => {
              value={name}
              onChange={e => setName(e.target.value)}
              required />
+             {errors.name && <span className="error text-danger">{errors.name[0]}</span>}
           </Form.Group>
 
           <Form.Group controlId="formBasicLastName" className="group">
@@ -68,6 +82,7 @@ export const FormRegister = () => {
               onChange={e => setLast_Name(e.target.value)}
               required
             />
+            {errors.last_Name && <span className="error text-danger">{errors.last_Name[0]}</span>}
           </Form.Group>
 
           <Form.Group controlId="formBasicSecondLastName" className="group">
@@ -80,6 +95,7 @@ export const FormRegister = () => {
               onChange={e => setSecond_Last_Name(e.target.value)}
               required
             />
+            {errors.second_Last_Name && <span className="error text-danger">{errors.second_Last_Name[0]}</span>}
           </Form.Group>
 
           <Form.Group controlId="formBasicPassword" className="group">
@@ -92,6 +108,7 @@ export const FormRegister = () => {
               onChange={e => setPassword(e.target.value)}
               required
             />
+            {errors.password && <span className="error text-danger">{errors.password[0]}</span>}
           </Form.Group>
 
           <Form.Group controlId="formBasicConfirmPassword" className="group">
@@ -104,6 +121,7 @@ export const FormRegister = () => {
               onChange={e => setPassword_Confirmation(e.target.value)}
               required
             />
+            {errors.passwordConfirmation && <span className="error text-danger">{errors.passwordConfirmation[0]}</span>}
           </Form.Group>
 
           <Button variant="primary" type="submit" > 
