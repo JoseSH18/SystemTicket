@@ -14,6 +14,7 @@ const endpoint = 'http://localhost:8000/api'
 const role = localStorage.getItem('role')
 const CrudTicket = () => {
   const [tickets, setTickets] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
   const [categories, setCategories] = useState([]);
   const [statuses, setStatuses] = useState([]);
   const [priorities, setPriorities] = useState([]);
@@ -28,6 +29,7 @@ const CrudTicket = () => {
   }, [])
 
   const getAllTickets = async () =>{
+    setIsLoading(true)
     try {
       const token = localStorage.getItem('token');
      
@@ -38,6 +40,7 @@ const CrudTicket = () => {
       });
       
       setTickets(response.data)
+      setIsLoading(false)
     } catch (error) {
       console.error(error)
     }
@@ -82,7 +85,16 @@ const CrudTicket = () => {
       console.error(error)
     }
   }
-
+  const deleteTicket= async (id) =>{
+    const token = localStorage.getItem('token');
+    await axios.delete(`${endpoint}/ticket/delete/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    window.location.reload();
+    getAllTickets()
+  }
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
   };
@@ -107,7 +119,7 @@ const CrudTicket = () => {
         return statusMatch && priorityMatch && categoryMatch;
       })
     : tickets;
-    if (tickets.length === 0) {
+    if (isLoading) {
       
       return(
       <>
@@ -186,9 +198,9 @@ const CrudTicket = () => {
                                   <NavDropdown.Item href={`/detail/${ticket.id}`}>Detalle</NavDropdown.Item>
 
                               ) : null}
-                            {role === "Admin" ? (
+                            {role === "Admin" || role === "Agent" ? (
                                 <NavDropdown.Item href="#action4">
-                                  Eliminar
+                                <button onClick={()=>deleteTicket(ticket.id)} variant="link" className="dropdown-item">Eliminar</button>
                                 </NavDropdown.Item>
                               ) : null}
                           </NavDropdown>

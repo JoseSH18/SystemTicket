@@ -23,6 +23,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::post('/ticket/update/{id}', [TicketController::class, 'update'])->name('api.tickets.update')->middleware('can:api.tickets.update');
     Route::get('/ticket/get/{id}', [TicketController::class, 'ticketById'])->name('api.tickets.ticketById')->middleware('can:api.tickets.ticketById');
     Route::put('/ticket/assign/{id}', [TicketController::class, 'assign'])->name('api.tickets.assign')->middleware('can:api.tickets.assign');
+    Route::delete('/ticket/delete/{id}', [TicketController::class, 'delete'])->name('api.tickets.delete')->middleware('can:api.tickets.delete');
     Route::get('/ticket/priorities', [TicketController::class, 'getPriorities'])->name('api.tickets.priorities')->middleware('can:api.tickets.priorities');
     Route::get('/ticket/statuses', [TicketController::class, 'getStatuses'])->name('api.tickets.statuses')->middleware('can:api.tickets.statuses');
     Route::get('/ticket/agents', [TicketController::class, 'getAgents'])->name('api.tickets.agents')->middleware('can:api.tickets.agents');

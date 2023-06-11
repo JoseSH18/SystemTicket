@@ -266,4 +266,9 @@ class TicketController extends Controller
 
         return $ticket;
     }
+    public function delete(string $id)
+    {
+        $ticket = Ticket::destroy($id);
+        return $ticket;
+    }
 }
