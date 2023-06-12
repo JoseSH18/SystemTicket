@@ -53,8 +53,8 @@ const TicketDetail = () => {
   return (
     <Container>
       <Row>
-        <Col>
-        <Link to={`/`} variant="link" className='d-flex'>&larr; Home</Link>
+        <Col className='w-25'>
+        <Link to={`/`} variant="link" style={{ width: '90px' }} className='d-flex btn btn-outline-info'>&larr; Home</Link>
           <h1>Ticket Detail</h1>
         </Col>
       </Row>

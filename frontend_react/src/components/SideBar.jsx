@@ -35,7 +35,7 @@ const SideBar = () => {
     <Offcanvas.Body>
 
       <Button variant="outline-danger" onClick={logout}>Logout</Button>
-      <Link onClick={handleClose} to={`/`}  className='btn btn-outline-info d-flex mt-2 w-25' >Home</Link>
+      <Link onClick={handleClose} to={`/`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '76px' }}>Home</Link>
     </Offcanvas.Body>
   </Offcanvas>
   </div>

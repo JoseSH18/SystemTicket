@@ -3,11 +3,14 @@ import './css/loadingstyles.css'
 
 const loading = () => {
   return (
-    <div className='loading'>
-    <svg className="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-   <circle className="path" fill="none" strokeWidth="6" strokeLinecap="round" cx="33" cy="33" r="30"></circle>
-    </svg>
-    </div>
+<div id="container">
+  <label className="loading-title">Loading ...</label>
+  <span className="loading-circle sp1">
+    <span className="loading-circle sp2">
+      <span className="loading-circle sp3"></span>
+    </span>
+  </span>
+</div>
   )
 }
 export default loading

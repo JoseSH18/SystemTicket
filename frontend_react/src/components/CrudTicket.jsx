@@ -128,11 +128,19 @@ const CrudTicket = () => {
 </>
 )
       }
+      else if(!isLoading && tickets.length === 0 ){
+        return(
+          <>
+      <NavBar getAllTickets={getAllTickets} />
+      <h3 className='text-success'>No se encontraron tickets registrados</h3>
+    </>
+        )
+      }
   return (
     <div>   
 <NavBar getAllTickets={getAllTickets}/>
 
-    <Table striped bordered hover size="sm">
+    <Table striped bordered hover size="sm" style={{ overflowX: 'auto', maxHeight: '100%' }}>
     <thead>
       <tr>
         <th>Title</th>
