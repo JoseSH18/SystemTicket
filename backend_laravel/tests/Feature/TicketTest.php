@@ -15,6 +15,8 @@ use App\Models\File;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Testing\Fluent\AssertableJson;
+
 class TicketTest extends TestCase
 {
     use RefreshDatabase;
@@ -77,22 +79,14 @@ class TicketTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,
         ])->get(route('api.tickets.index'));
-        $responseTickets = $response->json(); // Obtener los datos del objeto response
-
-        $this->assertCount($ticketsUser->count(), $responseTickets);
-        foreach ($ticketsUser as $ticket) {
-            $ticketArray = $ticket->toArray();
-        
-            $found = false;
-        
-            foreach ($responseTickets as $responseTicket) {
-                if ($ticketArray['title'] === $responseTicket['title'] && $ticketArray['text_Description'] === $responseTicket['text_Description']) {
-                    $found = true;
-                    break;
-                }
-            }
-        
-            $this->assertTrue($found);
-        }
+        $response->assertJson(function (AssertableJson $json) use ($ticketsUser) {
+            $json->has($ticketsUser->count())
+                ->where('0.id', $ticketsUser[0]['id'])
+                ->where('0.title', $ticketsUser[0]['title'])
+                ->where('0.text_Description', $ticketsUser[0]['text_Description'])
+                ->where('0.id_Priority', $ticketsUser[0]['id_Priority'])
+                ->where('0.id_Status', $ticketsUser[0]['id_Status'])
+                ->etc();
+        });
     }
 }
