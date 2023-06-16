@@ -47,7 +47,7 @@ const CrudTicket = () => {
   }
   const getAllCategories = async () =>{
     const token = localStorage.getItem('token');
-    try {
+    try { 
       const response = await axios.get(`${endpoint}/categories/index`, {
         headers: {
           Authorization: `Bearer ${token}`,
