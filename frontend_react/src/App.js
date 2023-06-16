@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import CrudTicket from './components/CrudTicket.jsx';
-import { FormRegister } from './components/FormRegister';
-import FormLogin from './components/FormLogin';
-import TicketDetail from './components/TicketDetail';
+import CrudTicket from './components/tickets/CrudTicket.jsx';
+import { FormRegister } from './components/users/FormRegister';
+import FormLogin from './components/users/FormLogin';
+import TicketDetail from './components/tickets/TicketDetail';
+import CrudCategory from './components/categories/CrudCategory';
 import axios from 'axios';
 
-const PrivateRoute = ({ element: Element, ...rest }) => {
+const PrivateRoute = ({ element: Element, adminOnly, ...rest }) => {
   const isAuthenticated = localStorage.getItem('token');
-  const role = localStorage.getItem('role'); 
+  const role = localStorage.getItem('role');
 
-  if (isAuthenticated && (role === 'User' || role === 'Agent')) {
-    return <Element {...rest} />;
+  if (isAuthenticated) {
+    if (adminOnly) {
+      if (role === 'Admin') {
+        return <Element {...rest} />;
+      } else {
+        alert('Acceso denegado: se requiere el rol de Admin');
+        return <Navigate to="/" replace />;
+      }
+    } else {
+      return <Element {...rest} />;
+    }
   } else {
     return <Navigate to="/login" replace />;
   }
@@ -76,8 +86,11 @@ function App() {
         <Routes>
           <Route path="/login" element={<FormLogin />} />
           <Route path="/register" element={<FormRegister />} />
+
           <Route path="/" element={<PrivateRoute element={CrudTicket} />} />
           <Route path="/detail/:id" element={<PrivateRoute element={TicketDetail} />} />
+
+          <Route path="/categories" element={<PrivateRoute element={CrudCategory} adminOnly />} />
         </Routes>
       </Router>
     </div>

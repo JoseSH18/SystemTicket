@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Priority;
-use App\Models\Category;
 use App\Models\Tag;
 use App\Models\File;
 use App\Models\Status;
@@ -109,7 +108,7 @@ class TicketController extends Controller
         } catch (\Throwable $th) {
             
     
-            return ('api.tickets.index');
+            return redirect()->back()->withErrors($th)->withInput();
         }
         
     }
@@ -203,7 +202,6 @@ class TicketController extends Controller
            
         } catch (\Throwable $th) {
             
-            var_dump($th->getMessage());
             return redirect()->back()->withErrors($th)->withInput();
         }
         
@@ -242,11 +240,7 @@ class TicketController extends Controller
         return $statuses;
     }
 
-    public function getCategories()
-    {
-        $categories = Category::All();
-        return $categories;
-    }
+
 
     public function getTags()
     {

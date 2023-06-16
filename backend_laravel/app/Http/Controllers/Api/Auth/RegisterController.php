@@ -41,8 +41,11 @@ class RegisterController extends Controller
             'last_Name' => $request->input('last_Name'),
             'second_Last_Name' => $request->input('second_Last_Name'),
         ]);
+        if($request->input('role') === null){
         $user->assignRole('User');
-
+        }else{
+            $user->assignRole($request->input('role'));
+        }
         return response()->json([
             'user' => $user,
         ], 201);

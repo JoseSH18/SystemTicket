@@ -1,5 +1,5 @@
 import { Form, Button, Container, Navbar, Nav } from "react-bootstrap";
-import "./style.css"; 
+import "../css/style.css"; 
 import axios from 'axios'
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'

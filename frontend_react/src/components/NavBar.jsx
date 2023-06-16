@@ -1,24 +1,31 @@
 import React from 'react'
 
 import Button from 'react-bootstrap/Button';
-
+import { useLocation } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import ModalCreateTicket from './ModalCreateTicket';
+import ModalCreateTicket from './tickets/ModalCreateTicket';
+import ModalCreateCategory from './categories/ModalCreateCategory';
 import SideBar from './SideBar';
 
 
 const role = localStorage.getItem('role')
-const NavBar = ({getAllTickets}) => {
-
+const NavBar = ({getAllCategories = () => {}, getAllTickets = () => {}}) => {
+  const location = useLocation();
   return (
     <div>
         <Navbar bg="light" expand="lg">
       <Container fluid>
         <SideBar/>
-        <Navbar.Brand className='text-info' href="/">Ticket System</Navbar.Brand>
+        
+        {location.pathname === '/' ? (
+         <Navbar.Brand className='text-info' href="/">Ticket System</Navbar.Brand>
+          ) : null}
+          {location.pathname === '/categories' ? (
+         <Navbar.Brand className='text-info' href="/categories">Categorías</Navbar.Brand>
+          ) : null}
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -28,6 +35,9 @@ const NavBar = ({getAllTickets}) => {
           >
           {role === "User" ? (
           <ModalCreateTicket getAllTickets={getAllTickets}/>
+          ) : null}
+          {role === "Admin" && location.pathname === '/categories' ? (
+           <ModalCreateCategory getAllCategories={getAllCategories}/>
           ) : null}
             
         

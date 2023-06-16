@@ -41,6 +41,9 @@ class rolseeder extends Seeder
         $permissionComment->syncRoles([$role1, $role2, $role3]);
         $permissionTicketDelete= Permission::firstOrCreate(['name' => 'api.tickets.delete']);
         $permissionTicketDelete->syncRoles([$role2, $role3]);
+        $permissionCategoryIndex= Permission::firstOrCreate(['name' => 'api.categories.index']);
+        $permissionCategoryIndex->syncRoles([$role1, $role2, $role3]);
+        Permission::firstOrCreate(['name'=>'api.categories.store'])->assignRole($role2);
 
     }
 }

@@ -34,8 +34,12 @@ const SideBar = () => {
     </Offcanvas.Header>
     <Offcanvas.Body>
 
-      <Button variant="outline-danger" onClick={logout}>Logout</Button>
-      <Link onClick={handleClose} to={`/`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '76px' }}>Home</Link>
+      <Button variant="outline-danger" onClick={logout} style={{ width: '100px' }}>Logout</Button>
+      <Link onClick={handleClose} to={`/`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '100px' }}>Home</Link>
+      {role === "Admin"? (
+          <Link onClick={handleClose} to={`/categories`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '100px' }}>Categorías</Link>
+      ) : null}
+      
     </Offcanvas.Body>
   </Offcanvas>
   </div>
