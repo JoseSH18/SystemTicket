@@ -7,7 +7,7 @@ import {Button, Form, Modal} from 'react-bootstrap';
 
 const endpoint = 'http://localhost:8000/api'
 const ModalCreateTicket = ({getAllTickets}) => {
-
+  const [errors, setErrors] = useState({});
     const [title, setTitle] = useState('')
     const [text_Description, setText_Description] = useState('')
     const [id_Priority, setId_Priority] = useState(0)
@@ -107,9 +107,18 @@ const ModalCreateTicket = ({getAllTickets}) => {
         'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
       }
+    }).then(() => {
+      closeModal();
+      getAllTickets()
+    }).catch(error => {
+      if (error.response && error.response.status === 422) {
+        const errors = error.response.data.errors;
+        setErrors(errors);
+      } else {
+        // Manejo de otros tipos de errores
+      }
     });
-    closeModal();
-    getAllTickets()
+  
 
 
   }
@@ -149,6 +158,7 @@ const ModalCreateTicket = ({getAllTickets}) => {
       onChange={e => setTitle(e.target.value)}
       required
     />
+     {errors.title && <span className="error text-danger">{errors.title[0]}</span>}
   </Form.Group>
   <Form.Group controlId="formPriority">
     <Form.Label>Selecciona una prioridad</Form.Label>
@@ -159,6 +169,7 @@ const ModalCreateTicket = ({getAllTickets}) => {
           {priority.type}
         </option>
       ))}
+       {errors.id_Priority && <span className="error text-danger">{errors.id_Priority[0]}</span>}
     </Form.Control>
   </Form.Group>
 
@@ -171,6 +182,7 @@ const ModalCreateTicket = ({getAllTickets}) => {
           {status.status}
         </option>
       ))}
+       {errors.id_Status && <span className="error text-danger">{errors.id_Status[0]}</span>}
     </Form.Control>
   </Form.Group>
 
@@ -183,10 +195,12 @@ const ModalCreateTicket = ({getAllTickets}) => {
       onChange={e => setText_Description(e.target.value)}
       required 
     />
+     {errors.text_Description && <span className="error text-danger">{errors.text_Description[0]}</span>}
   </Form.Group>
   <Form.Group controlId="formFile">
         <Form.Label>Seleccionar archivo</Form.Label>
         <Form.Control type="file" multiple onChange={handleFileChange}  />
+        {errors.file && <span className="error text-danger">{errors.file[0]}</span>}
 </Form.Group>
 <Form.Group controlId="formCategory">
   <Form.Label>Selecciona una o más categorías</Form.Label>
@@ -196,6 +210,7 @@ const ModalCreateTicket = ({getAllTickets}) => {
         {category.category}
       </option>
     ))}
+     {errors.ids_Categories && <span className="error text-danger">{errors.ids_Categories[0]}</span>}
   </Form.Control>
 </Form.Group>
 <Form.Group controlId="formTag">
@@ -206,6 +221,7 @@ const ModalCreateTicket = ({getAllTickets}) => {
         {tag.tag}
       </option>
     ))}
+     {errors.ids_Tags && <span className="error text-danger">{errors.ids_Tags[0]}</span>}
   </Form.Control>
 </Form.Group>
 </Modal.Body>

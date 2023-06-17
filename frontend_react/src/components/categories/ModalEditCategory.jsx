@@ -7,6 +7,7 @@ import {Button, Form, Modal} from 'react-bootstrap';
 
 const endpoint = 'http://localhost:8000/api'
 const ModalEditCategory = ({EditObjects}) => {
+  const [errors, setErrors] = useState({});
     const { id, getAllCategories } = EditObjects;
     const [category, setCategory] = useState('')
 
@@ -37,10 +38,17 @@ const ModalEditCategory = ({EditObjects}) => {
         'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
       }
+    }).then(() => {
+      getAllCategories();
+      closeModal();
+    }).catch(error => {
+      if (error.response && error.response.status === 422) {
+        const errors = error.response.data.errors;
+        setErrors(errors);
+      } else {
+        // Manejo de otros tipos de errores
+      }
     });
-
-    getAllCategories();
-    closeModal();
 
   }
   const closeModal = () => {
@@ -75,6 +83,7 @@ const ModalEditCategory = ({EditObjects}) => {
       onChange={e => setCategory(e.target.value)}
       required
     />
+     {errors.category && <span className="error text-danger">{errors.category[0]}</span>}
   </Form.Group>
 </Modal.Body>
       <Modal.Footer>

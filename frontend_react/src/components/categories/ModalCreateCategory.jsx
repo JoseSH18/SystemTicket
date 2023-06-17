@@ -9,7 +9,7 @@ const endpoint = 'http://localhost:8000/api'
 const ModalCreateCategory = ({getAllCategories}) => {
 
     const [category, setCategory] = useState('')
-
+    const [errors, setErrors] = useState({});
 
     const navigate = useNavigate()
 
@@ -36,9 +36,18 @@ const ModalCreateCategory = ({getAllCategories}) => {
         'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
       }
+    }).then(() => {
+      getAllCategories();
+      closeModal();
+    }).catch(error => {
+      if (error.response && error.response.status === 422) {
+        const errors = error.response.data.errors;
+        setErrors(errors);
+      } else {
+        // Manejo de otros tipos de errores
+      }
     });
-    getAllCategories();
-    closeModal();
+    
   }
   const closeModal = () => {
     handleClose();
@@ -70,6 +79,7 @@ const ModalCreateCategory = ({getAllCategories}) => {
       onChange={e => setCategory(e.target.value)}
       required
     />
+     {errors.category && <span className="error text-danger">{errors.category[0]}</span>}
   </Form.Group>
 </Modal.Body>
       <Modal.Footer>

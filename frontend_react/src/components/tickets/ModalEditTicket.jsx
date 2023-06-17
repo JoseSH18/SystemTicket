@@ -5,8 +5,10 @@ import {Button, Form, Modal, Card} from 'react-bootstrap';
 
 
 
+const role = localStorage.getItem('role')
 const endpoint = 'http://localhost:8000/api'
 const ModalEditTicket = ({EditObjects}) => {
+  const [errors, setErrors] = useState({});
   const { id, getAllTickets } = EditObjects;
     const [title, setTitle] = useState('')
     const [text_Description, setText_Description] = useState('')
@@ -16,6 +18,8 @@ const ModalEditTicket = ({EditObjects}) => {
     const [ids_Tags, setIds_Tags] = useState([]);
     const [files, setFiles] = useState([]);
     const [oldFiles, setOldFiles] = useState([]);
+    const [id_Agent, setId_Agent] = useState('')
+    const [agents, setAgents] = useState([])
 
     const removeFile = (fileId) => {
       setOldFiles((prevFiles) => prevFiles.filter((file) => file.id !== fileId));
@@ -40,6 +44,19 @@ const ModalEditTicket = ({EditObjects}) => {
           },
         });
         setPriorities(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    const getAllAgents = async () =>{
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${endpoint}/ticket/agents`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setAgents(response.data)
       } catch (error) {
         console.error(error)
       }
@@ -120,14 +137,24 @@ const ModalEditTicket = ({EditObjects}) => {
     formData.append('text_Description', text_Description);
     formData.append('id_Priority', id_Priority); 
     formData.append('id_Status', id_Status); 
+    formData.append('id_Agent', id_Agent);
     await axios.post(`${endpoint}/ticket/update/${id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
       }
+    }).then(() => {
+      getAllTickets();
+      closeModal();
+    }).catch(error => {
+      if (error.response && error.response.status === 422) {
+        const errors = error.response.data.errors;
+        setErrors(errors);
+      } else {
+        // Manejo de otros tipos de errores
+      }
     });
-    getAllTickets();
-    closeModal();
+   
 
   }
   const closeModal = () => {
@@ -150,7 +177,11 @@ const ModalEditTicket = ({EditObjects}) => {
     <>
     <Button variant="link" className="dropdown-item" onClick={() => {
   getTicketById(id);
-  handleShow();}}>
+  handleShow();
+  if(role === 'Admin'){
+    getAllAgents();
+  }
+ }}>
       Editar
     </Button>
 
@@ -169,6 +200,7 @@ const ModalEditTicket = ({EditObjects}) => {
       onChange={e => setTitle(e.target.value)}
       required
     />
+    {errors.title && <span className="error text-danger">{errors.title[0]}</span>}
   </Form.Group>
   <Form.Group controlId="formPriority">
     <Form.Label>Selecciona una prioridad</Form.Label>
@@ -179,6 +211,7 @@ const ModalEditTicket = ({EditObjects}) => {
           {priority.type}
         </option>
       ))}
+      {errors.id_Priority && <span className="error text-danger">{errors.id_Priority[0]}</span>}
     </Form.Control>
   </Form.Group>
 
@@ -191,6 +224,7 @@ const ModalEditTicket = ({EditObjects}) => {
           {status.status}
         </option>
       ))}
+      {errors.id_Status && <span className="error text-danger">{errors.id_Status[0]}</span>}
     </Form.Control>
   </Form.Group>
 
@@ -203,6 +237,7 @@ const ModalEditTicket = ({EditObjects}) => {
       onChange={e => setText_Description(e.target.value)}
       required 
     />
+    {errors.text_Description && <span className="error text-danger">{errors.text_Description[0]}</span>}
   </Form.Group>
   {oldFiles.map((file) => (
       <Card key={file.id} className="mb-3">
@@ -228,6 +263,7 @@ const ModalEditTicket = ({EditObjects}) => {
         {category.category}
       </option>
     ))}
+    {errors.ids_Categories && <span className="error text-danger">{errors.ids_Categories[0]}</span>}
   </Form.Control>
 </Form.Group>
 
@@ -239,8 +275,22 @@ const ModalEditTicket = ({EditObjects}) => {
         {tag.tag}
       </option>
     ))}
+    {errors.setIds_Tags && <span className="error text-danger">{errors.setIds_Tags[0]}</span>}
   </Form.Control>
 </Form.Group>
+{role === "Admin" ? (        
+<Form.Group controlId="formAgent">
+    <Form.Label>Selecciona un agente</Form.Label>
+    <Form.Control as="select" value={id_Agent} onChange={e => setId_Agent(e.target.value)}>
+      <option value={0}>Seleccionar</option>
+      {agents.map(agent => (
+        <option key={agent.id} value={agent.id}>
+          {agent.name}
+        </option>
+      ))}
+    </Form.Control>
+  </Form.Group>
+) : null}
 </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={closeModal}>

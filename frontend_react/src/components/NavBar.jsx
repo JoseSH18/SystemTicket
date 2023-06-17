@@ -37,7 +37,7 @@ const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}}) => {
             navbarScroll
           >
              
-          {role === "User" && /^\/detail\/\d+$/.test(location.pathname)? (
+          {/^\/detail\/\d+$/.test(location.pathname)? (
           <Link to={`/`} variant="link" style={{ width: '90px' }} className='d-flex btn btn-outline-info'>&larr; Home</Link>
           ) : null}
           {role === "User" && location.pathname === '/'? (

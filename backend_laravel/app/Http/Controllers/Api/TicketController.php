@@ -48,10 +48,16 @@ class TicketController extends Controller
             'id_Priority' => 'required|numeric',
             'id_Status' => 'required|numeric',
             'text_Description' => 'required|max:100',
+            'file' => 'required|array|min:1',
+            'file.*' => 'file',
+            'ids_Categories' => 'required|array|min:1',
+            'ids_Tags' => 'required|array|min:1',
         ]);
     
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
         }
     
         
@@ -117,7 +123,20 @@ class TicketController extends Controller
     {
 
  
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|max:30',
+            'id_Priority' => 'required|numeric',
+            'id_Status' => 'required|numeric',
+            'text_Description' => 'required|max:100',
+            'ids_Categories' => 'required|array|min:1',
+            'ids_Tags' => 'required|array|min:1',
+        ]);
     
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
         
         try {
 
@@ -129,7 +148,10 @@ class TicketController extends Controller
                 $status = ($request->id_Status) ? Status::find($request->id_Status) : null;
                 $ticket->status()->associate($status);
             
-
+                if($request->id_Agent != ''){
+                    $agent = User::find($request->id_Agent);
+                    $ticket->agent()->associate($agent);
+                }
                 $ticket->title = $request->title;
                 $ticket->text_Description = $request->text_Description;
                 $ticket->save();

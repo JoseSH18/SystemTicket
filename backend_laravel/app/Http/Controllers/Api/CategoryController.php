@@ -20,11 +20,14 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'category' => 'required|max:30',
         ]);
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
         }
 
         try {
@@ -42,6 +45,14 @@ class CategoryController extends Controller
     }
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'category' => 'required|max:30',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
         $category = Category::findOrFail($id);
         try {
             $category->category = $request->category;

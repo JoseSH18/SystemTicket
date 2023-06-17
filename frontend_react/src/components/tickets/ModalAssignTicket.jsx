@@ -44,7 +44,6 @@ const ModalAssignTicket = ({AssignObjects}) => {
         }
       }
       useEffect ( ()=>{
-        getAllAgents();
     }, [])
     const [show, setShow] = useState(false);
 
@@ -53,7 +52,9 @@ const ModalAssignTicket = ({AssignObjects}) => {
     
   return (
 <>
-    <Button variant="link" className="dropdown-item" onClick={handleShow}>
+    <Button variant="link" className="dropdown-item" onClick={() => {
+  getAllAgents();;
+  handleShow();}}>
       Asignar
     </Button>
 

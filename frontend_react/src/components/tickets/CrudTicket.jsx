@@ -1,6 +1,7 @@
 import React from 'react'
 import {Table, Modal, Button} from 'react-bootstrap';
 import NavBar from '../NavBar';
+import { Link } from 'react-router-dom';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import ModalAssignTicket from './ModalAssignTicket';
 import ModalEditTicket from './ModalEditTicket';
@@ -195,7 +196,10 @@ const CrudTicket = () => {
     <tbody>
     {filteredTickets.map((ticket) => (
                       <tr key={ticket.id}>
-                          <td>{ticket.title}</td>   
+                          <td>
+                          <Link to={`/detail/${ticket.id}`} className="btn button-transparent"> {ticket.title}</Link>
+                             
+                          </td>   
                           <td>{ticket.text_Description}</td>   
                           <td>{ticket.priority.type}</td>   
                           <td>{ticket.status.status}</td>
@@ -212,11 +216,7 @@ const CrudTicket = () => {
                               {role === "Admin" || role === "Agent" ? (
                                <NavDropdown.Item href="#action3"><ModalEditTicket EditObjects={{id: ticket.id, getAllTickets: getAllTickets}}/></NavDropdown.Item>
                               ) : null}
-                              {role === "User" || role === "Agent" ? (
-                
                                   <NavDropdown.Item href={`/detail/${ticket.id}`}>Detalle</NavDropdown.Item>
-
-                              ) : null}
                             {role === "Admin" || role === "Agent" ? (
                                 <NavDropdown.Item href="#action4">
                                 <button onClick={() => {setIdTicket(ticket.id);handleDelete();}} variant="link" className="dropdown-item">Eliminar</button>
