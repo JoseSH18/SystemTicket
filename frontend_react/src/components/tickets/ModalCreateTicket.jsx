@@ -108,8 +108,13 @@ const ModalCreateTicket = ({getAllTickets}) => {
           Authorization: `Bearer ${token}`,
       }
     });
-    handleClose();
+    closeModal();
     getAllTickets()
+
+
+  }
+  const closeModal = () => {
+    handleClose();
     setFiles([]);
     setTitle('');
     setText_Description('');
@@ -118,9 +123,7 @@ const ModalCreateTicket = ({getAllTickets}) => {
     setIds_Cateogories([]);
     setIds_Tags([]);
     navigate('/')
-
-  }
- 
+  };
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -207,7 +210,7 @@ const ModalCreateTicket = ({getAllTickets}) => {
 </Form.Group>
 </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button variant="secondary" onClick={closeModal}>
           Cerrar
         </Button>
         <Button variant="primary" type="submit" >

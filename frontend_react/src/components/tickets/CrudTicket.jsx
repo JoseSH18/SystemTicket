@@ -1,5 +1,5 @@
 import React from 'react'
-import Table from 'react-bootstrap/Table';
+import {Table, Modal, Button} from 'react-bootstrap';
 import NavBar from '../NavBar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import ModalAssignTicket from './ModalAssignTicket';
@@ -13,6 +13,7 @@ import axios from 'axios'
 const endpoint = 'http://localhost:8000/api'
 const role = localStorage.getItem('role')
 const CrudTicket = () => {
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [tickets, setTickets] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [categories, setCategories] = useState([]);
@@ -20,7 +21,8 @@ const CrudTicket = () => {
   const [priorities, setPriorities] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedPriority, setSelectedPriority] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(''); // Categoría seleccionada para filtrar
+  const [selectedCategory, setSelectedCategory] = useState(''); 
+  const [idTicket, setIdTicket] = useState('')
   useEffect ( ()=>{
     getAllTickets()
     getAllCategories()
@@ -85,13 +87,14 @@ const CrudTicket = () => {
       console.error(error)
     }
   }
-  const deleteTicket= async (id) =>{
+  const confirmDelete= async (id) =>{
     const token = localStorage.getItem('token');
     await axios.delete(`${endpoint}/ticket/delete/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    setShowConfirmation(false);
     getAllTickets()
   }
   const handleCategoryChange = (event) => {
@@ -100,7 +103,12 @@ const CrudTicket = () => {
   const handleStatusChange = (event) => {
     setSelectedStatus(event.target.value);
   };
-  
+  const handleDelete = () => {
+    setShowConfirmation(true);
+  };
+  const handleClose = () => {
+    setShowConfirmation(false);
+  };
   const handlePriorityChange = (event) => {
     setSelectedPriority(event.target.value);
   };
@@ -207,7 +215,7 @@ const CrudTicket = () => {
                               ) : null}
                             {role === "Admin" || role === "Agent" ? (
                                 <NavDropdown.Item href="#action4">
-                                <button onClick={()=>deleteTicket(ticket.id)} variant="link" className="dropdown-item">Eliminar</button>
+                                <button onClick={() => {setIdTicket(ticket.id);handleDelete();}} variant="link" className="dropdown-item">Eliminar</button>
                                 </NavDropdown.Item>
                               ) : null}
                           </NavDropdown>
@@ -216,7 +224,18 @@ const CrudTicket = () => {
       ) )}
     </tbody>
   </Table>
+  {showConfirmation && (
+  <Modal show={setShowConfirmation} onHide={handleClose}>
+    <Modal.Header closeButton>
+      <Modal.Title>¿Estás seguro de que deseas eliminar este Ticket?</Modal.Title>
+    </Modal.Header>
+    <Modal.Footer>
+    <Button variant="outline-success" onClick={()=>confirmDelete(idTicket)}>Sí</Button>
+    <Button variant="outline-danger" onClick={() => setShowConfirmation(false)}>Cancelar</Button>
+    </Modal.Footer>
 
+  </Modal>
+)}
   </div>
   )
 }

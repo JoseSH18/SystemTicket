@@ -23,10 +23,13 @@ const ModalAssignTicket = ({AssignObjects}) => {
           },
         });
         getAllTickets();
-        handleClose();
-        navigate('/')
+        closeModal();
     }
-
+    const closeModal = () => {
+      handleClose();
+      setId_Agent('');
+      navigate('/')
+    };
     const getAllAgents = async () =>{
         try {
           const token = localStorage.getItem('token');
@@ -72,7 +75,7 @@ const ModalAssignTicket = ({AssignObjects}) => {
   </Form.Group>
 </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button variant="secondary" onClick={closeModal}>
           Cerrar
         </Button>
         <Button variant="primary" onClick={assign}>

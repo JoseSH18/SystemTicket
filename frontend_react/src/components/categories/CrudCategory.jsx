@@ -1,5 +1,5 @@
 import React from 'react'
-import Table from 'react-bootstrap/Table';
+import {Table, Modal, Button} from 'react-bootstrap';
 import NavBar from '../NavBar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Loading from '../loading';
@@ -11,8 +11,10 @@ import axios from 'axios'
 const endpoint = 'http://localhost:8000/api'
 const role = localStorage.getItem('role')
 const CrudCategory = () => {
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [categories, setCategories] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [idCategory, setIdCategory] = useState('')
 
   useEffect ( ()=>{
     getAllCategories()
@@ -33,17 +35,22 @@ const CrudCategory = () => {
       console.error(error)
     }
   }
-  const deleteCategory= async (id) =>{
+  const confirmDelete = async (id) => {
     const token = localStorage.getItem('token');
     await axios.delete(`${endpoint}/category/delete/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    getAllCategories()
-  }
-
-
+    setShowConfirmation(false);
+    getAllCategories();
+  };
+  const handleDelete = () => {
+    setShowConfirmation(true);
+  };
+  const handleClose = () => {
+    setShowConfirmation(false);
+  };
 
     if (isLoading) {
       
@@ -86,16 +93,31 @@ const CrudCategory = () => {
                               ) : null}
                             {role === "Admin" ? (
                                 <NavDropdown.Item href="#action4">
-                                  <button onClick={()=>deleteCategory(category.id)} variant="link" className="dropdown-item">Eliminar</button>
+                                  <button onClick={() => {setIdCategory(category.id);handleDelete();}} variant="link" className="dropdown-item">Eliminar</button>
+
                                 </NavDropdown.Item>
+                                
                               ) : null}
                           </NavDropdown>
+
                           </td>
+                          
                       </tr>  
       ) )}
     </tbody>
   </Table>
+  {showConfirmation && (
+  <Modal show={setShowConfirmation} onHide={handleClose}>
+    <Modal.Header closeButton>
+      <Modal.Title>¿Estás seguro de que deseas eliminar esta categoría?</Modal.Title>
+    </Modal.Header>
+    <Modal.Footer>
+    <Button variant="outline-success" onClick={()=>confirmDelete(idCategory)}>Sí</Button>
+    <Button variant="outline-danger" onClick={() => setShowConfirmation(false)}>Cancelar</Button>
+    </Modal.Footer>
 
+  </Modal>
+)}
   </div>
   )
 }

@@ -97,13 +97,10 @@ const ModalEditTicket = ({EditObjects}) => {
       setId_Status(response.data.id_Status)
       setIds_Cateogories(response.data.categories.map(category => category.id))
       setIds_Tags(response.data.tags.map(tag => tag.id))
-      console.log(response.data)
       setOldFiles(response.data.files)
 
   }
     useEffect( () =>{
-
-        getTicketById();
         getAllPriorities();
         getAllStatuses();
         getAllCategories();
@@ -129,8 +126,12 @@ const ModalEditTicket = ({EditObjects}) => {
           Authorization: `Bearer ${token}`,
       }
     });
-    handleClose();
     getAllTickets();
+    closeModal();
+
+  }
+  const closeModal = () => {
+    handleClose();
     setFiles([]);
     setTitle('');
     setText_Description('');
@@ -140,9 +141,7 @@ const ModalEditTicket = ({EditObjects}) => {
     setIds_Tags([]);
     setOldFiles([]);
     navigate('/')
-
-  }
- 
+  };
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -244,7 +243,7 @@ const ModalEditTicket = ({EditObjects}) => {
 </Form.Group>
 </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button variant="secondary" onClick={closeModal}>
           Cerrar
         </Button>
         <Button variant="primary" type="submit" >

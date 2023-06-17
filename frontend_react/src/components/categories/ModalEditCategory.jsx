@@ -23,8 +23,6 @@ const ModalEditCategory = ({EditObjects}) => {
     }
     useEffect( () =>{
         
-        getCategoryById()
-
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
   
@@ -40,13 +38,16 @@ const ModalEditCategory = ({EditObjects}) => {
           Authorization: `Bearer ${token}`,
       }
     });
-    handleClose();
+
     getAllCategories();
-    setCategory('');
-    navigate('/categories')
+    closeModal();
 
   }
- 
+  const closeModal = () => {
+    handleClose();
+    setCategory('');
+    navigate('/categories')
+  };
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -77,7 +78,7 @@ const ModalEditCategory = ({EditObjects}) => {
   </Form.Group>
 </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button variant="secondary" onClick={closeModal}>
           Cerrar
         </Button>
         <Button variant="primary" type="submit" >
