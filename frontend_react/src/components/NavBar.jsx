@@ -9,7 +9,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import ModalCreateTicket from './tickets/ModalCreateTicket';
 import ModalCreateCategory from './categories/ModalCreateCategory';
 import SideBar from './SideBar';
-
+import {Link} from 'react-router-dom'
 
 const role = localStorage.getItem('role')
 const NavBar = ({getAllCategories = () => {}, getAllTickets = () => {}}) => {
@@ -36,7 +36,11 @@ const NavBar = ({getAllCategories = () => {}, getAllTickets = () => {}}) => {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-          {role === "User" ? (
+             
+          {role === "User" && /^\/detail\/\d+$/.test(location.pathname)? (
+          <Link to={`/`} variant="link" style={{ width: '90px' }} className='d-flex btn btn-outline-info'>&larr; Home</Link>
+          ) : null}
+          {role === "User" && location.pathname === '/'? (
           <ModalCreateTicket getAllTickets={getAllTickets}/>
           ) : null}
           {role === "Admin" && location.pathname === '/categories' ? (

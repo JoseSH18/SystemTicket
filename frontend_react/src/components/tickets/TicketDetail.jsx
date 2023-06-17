@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table, Form, Button, Card } from 'react-bootstrap';
 import {useParams } from 'react-router-dom';
 import axios from 'axios';
-import {Link} from 'react-router-dom'
+
 import Loading from '../loading';
+import NavBar from '../NavBar';
 
 const endpoint = 'http://localhost:8000/api/ticket';
 
@@ -48,13 +49,21 @@ const TicketDetail = () => {
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (!ticket) {
-    return <Loading />
+
+      return(
+      <>
+  <NavBar />
+  <Loading />
+</>
+)
     }
   return (
+    <>
+    <NavBar />    
     <Container>
       <Row>
         <Col className='w-25'>
-        <Link to={`/`} variant="link" style={{ width: '90px' }} className='d-flex btn btn-outline-info'>&larr; Home</Link>
+       
           <h1>Ticket Detail</h1>
         </Col>
       </Row>
@@ -159,6 +168,7 @@ const TicketDetail = () => {
       </Row>
      
     </Container>
+    </>
   );
 };
 
