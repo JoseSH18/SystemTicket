@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navbar, Nav, Container, Form, Button } from 'react-bootstrap';
+import { Navbar, Nav, Container, Form, Button, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "../css/style.css"; 
@@ -56,7 +56,9 @@ const FormLogin = () => {
       </Navbar>
 
       <div className="background">
-        <Container className="form-container" style={{ width: "40vw" }}>
+      <Col xs={12} sm={8} md={6} lg={4} xl={3} className="mx-auto">
+        <Container className="form-container">
+       
           <h2>Inicio de Sesión</h2>
           <Form onSubmit={handleLogin}>
             <Form.Group controlId="formEmail">
@@ -85,11 +87,14 @@ const FormLogin = () => {
             {errors.password && <Form.Text className="text-danger">{errors.password[0]}</Form.Text>}
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit"  className='mt-2'>
               Iniciar sesión
             </Button>
+
           </Form>
+
         </Container>
+        </Col>
       </div>
     </div>
   )

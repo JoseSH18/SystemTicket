@@ -1,4 +1,4 @@
-import { Form, Button, Container, Navbar, Nav } from "react-bootstrap";
+import { Form, Button, Container, Navbar, Nav, Col } from "react-bootstrap";
 import "../css/style.css"; 
 import axios from 'axios'
 import React, {useState} from 'react'
@@ -43,11 +43,11 @@ export const FormRegister = () => {
       </Container>
     </Navbar>
     <div className="background">
-       
-      <Container className="form-container" style={{ width: "40vw" }}>
+    <Col xs={12} sm={10} md={8} lg={6} xl={4} className="mx-auto">
+      <Container className="form-container mt-2">
         <h2>Registro</h2>
-        <Form onSubmit={store}>
-          <Form.Group controlId="formBasicEmail" className="group">
+        <Form onSubmit={store} >
+          <Form.Group controlId="formBasicEmail" className="group" style={{ width: '100%', fontSize: '16px' }}>
           <Form.Label>Correo electronico</Form.Label>
             <Form.Control
               type="email"
@@ -60,7 +60,7 @@ export const FormRegister = () => {
             {errors.email && <span className="error text-danger">{errors.email[0]}</span>}
           </Form.Group>
 
-          <Form.Group controlId="formBasicName" className="group">
+          <Form.Group controlId="formBasicName" className="group" style={{ width: '100%', fontSize: '16px'}}>
             <Form.Label>Nombre</Form.Label>
             <Form.Control 
              type="text"
@@ -72,7 +72,7 @@ export const FormRegister = () => {
              {errors.name && <span className="error text-danger">{errors.name[0]}</span>}
           </Form.Group>
 
-          <Form.Group controlId="formBasicLastName" className="group">
+          <Form.Group controlId="formBasicLastName" className="group" style={{ width: '100%', fontSize: '16px' }}>
           <Form.Label>Primer Apellido</Form.Label>
             <Form.Control
               type="text"
@@ -85,7 +85,7 @@ export const FormRegister = () => {
             {errors.last_Name && <span className="error text-danger">{errors.last_Name[0]}</span>}
           </Form.Group>
 
-          <Form.Group controlId="formBasicSecondLastName" className="group">
+          <Form.Group controlId="formBasicSecondLastName" className="group" style={{ width: '100%', fontSize: '16px' }}>
           <Form.Label>Segundo Apellido</Form.Label>
             <Form.Control
               type="text"
@@ -98,7 +98,7 @@ export const FormRegister = () => {
             {errors.second_Last_Name && <span className="error text-danger">{errors.second_Last_Name[0]}</span>}
           </Form.Group>
 
-          <Form.Group controlId="formBasicPassword" className="group">
+          <Form.Group controlId="formBasicPassword" className="group" style={{ width: '100%', fontSize: '16px'}}>
           <Form.Label>Contraseña</Form.Label>
             <Form.Control
               type="password"
@@ -111,7 +111,7 @@ export const FormRegister = () => {
             {errors.password && <span className="error text-danger">{errors.password[0]}</span>}
           </Form.Group>
 
-          <Form.Group controlId="formBasicConfirmPassword" className="group">
+          <Form.Group controlId="formBasicConfirmPassword" className="group" style={{ width: '100%', fontSize: '16px' }}>
           <Form.Label>Confirmar Contraseña</Form.Label>
             <Form.Control
               type="password"
@@ -124,11 +124,12 @@ export const FormRegister = () => {
             {errors.passwordConfirmation && <span className="error text-danger">{errors.passwordConfirmation[0]}</span>}
           </Form.Group>
 
-          <Button variant="primary" type="submit" > 
+          <Button variant="primary" type="submit"  className="mt-2"> 
             Registrar
           </Button>
         </Form>
       </Container>
+      </Col>
     </div>
     </div>
   );

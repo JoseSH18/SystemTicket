@@ -81,7 +81,7 @@ const CrudCategory = () => {
   return (
     <div>   
   <NavBar NavBarItemsCategories={{getAllCategories, handleCategoryChange, searchCategory}} />
-
+  <div className="table-responsive">
     <Table striped bordered hover size="sm" style={{ overflowX: 'auto', maxHeight: '100%' }}>
     <thead>
       <tr>
@@ -115,6 +115,7 @@ const CrudCategory = () => {
       ) )}
     </tbody>
   </Table>
+  </div>
   {showConfirmation && (
   <Modal show={setShowConfirmation} onHide={handleClose}>
     <Modal.Header closeButton>
