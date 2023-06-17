@@ -29,7 +29,7 @@ class TicketFactory extends Factory
                 return Status::factory()->create();
             },
             'id_User' => function () {
-                return User::factory()->create();
+                return User::factory()->create()->assignRole('User');
             },
         ];
     }

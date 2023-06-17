@@ -33,6 +33,9 @@ Route::middleware('jwt.auth')->group(function () {
 
     Route::get('/categories/index', [CategoryController::class, 'index'])->name('api.categories.index')->middleware('can:api.categories.index');
     Route::post('/category/store', [CategoryController::class, 'store'])->name('api.categories.store')->middleware('can:api.categories.store');
+    Route::post('/category/update/{id}', [CategoryController::class, 'update'])->name('api.categories.update')->middleware('can:api.categories.update');
+    Route::get('/category/get/{id}', [CategoryController::class, 'categoryById'])->name('api.categories.categoryById')->middleware('can:api.categories.categoryById');
+    Route::delete('/category/delete/{id}', [CategoryController::class, 'delete'])->name('api.categories.delete')->middleware('can:api.categories.delete');
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('api.auth.logout')->middleware('can:api.auth.logout');
 });

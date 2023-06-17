@@ -35,4 +35,25 @@ class CategoryController extends Controller
             return redirect()->back()->withErrors($th)->withInput();
         }
     }
+    public function categoryById(string $id)
+    {
+        $category = Category::find($id);
+        return $category;
+    }
+    public function update(Request $request, $id)
+    {
+        $category = Category::findOrFail($id);
+        try {
+            $category->category = $request->category;
+            $category->save();
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors($th)->withInput();
+        }
+    }
+    public function delete(string $id)
+    {
+        $category = Category::destroy($id);
+        return $category;
+    }
+
 }

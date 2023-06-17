@@ -3,7 +3,7 @@ import Table from 'react-bootstrap/Table';
 import NavBar from '../NavBar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Loading from '../loading';
-
+import ModalEditCategory from './ModalEditCategory';
 
 import {useEffect, useState} from 'react'
 import axios from 'axios'
@@ -33,7 +33,15 @@ const CrudCategory = () => {
       console.error(error)
     }
   }
-
+  const deleteCategory= async (id) =>{
+    const token = localStorage.getItem('token');
+    await axios.delete(`${endpoint}/category/delete/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    getAllCategories()
+  }
 
 
 
@@ -74,11 +82,11 @@ const CrudCategory = () => {
                           <NavDropdown title={<i className="fa-solid fa-ellipsis-vertical"></i>} id="navbarScrollingDropdown">
                             
                               {role === "Admin" ? (
-                               <NavDropdown.Item href="#action3">Editar</NavDropdown.Item>
+                             <NavDropdown.Item href="#action3"><ModalEditCategory EditObjects={{id: category.id, getAllCategories: getAllCategories}}/></NavDropdown.Item>
                               ) : null}
                             {role === "Admin" ? (
                                 <NavDropdown.Item href="#action4">
-                                 Eliminar
+                                  <button onClick={()=>deleteCategory(category.id)} variant="link" className="dropdown-item">Eliminar</button>
                                 </NavDropdown.Item>
                               ) : null}
                           </NavDropdown>

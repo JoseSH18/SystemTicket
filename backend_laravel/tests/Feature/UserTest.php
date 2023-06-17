@@ -26,6 +26,7 @@ class UserTest extends TestCase
     public function test_register_user(): void
     {
         $user = User::factory()->make();
+        $user->assignRole('User');
         $data = $user->toArray();
         $data['password'] = $user->password;
         $data['password_confirmation'] = $user->password;
@@ -54,6 +55,7 @@ class UserTest extends TestCase
     public function test_login_user(): void
     {
         $user = User::factory()->create();
+        $user->assignRole('User');
         $data = [
             'email' => $user->email,
             'password' => 12345678,

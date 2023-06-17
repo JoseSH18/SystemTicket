@@ -92,7 +92,6 @@ const CrudTicket = () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    window.location.reload();
     getAllTickets()
   }
   const handleCategoryChange = (event) => {
@@ -199,7 +198,7 @@ const CrudTicket = () => {
                                <NavDropdown.Item href="#action3"><ModalAssignTicket AssignObjects={{id: ticket.id, getAllTickets: getAllTickets}}/></NavDropdown.Item>
                               ) : null}
                               {role === "Admin" || role === "Agent" ? (
-                               <NavDropdown.Item href="#action3"><ModalEditTicket id={ticket.id}/></NavDropdown.Item>
+                               <NavDropdown.Item href="#action3"><ModalEditTicket EditObjects={{id: ticket.id, getAllTickets: getAllTickets}}/></NavDropdown.Item>
                               ) : null}
                               {role === "User" || role === "Agent" ? (
                 

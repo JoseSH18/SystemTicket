@@ -6,8 +6,8 @@ import {Button, Form, Modal, Card} from 'react-bootstrap';
 
 
 const endpoint = 'http://localhost:8000/api'
-const ModalEditTicket = ({id}) => {
-
+const ModalEditTicket = ({EditObjects}) => {
+  const { id, getAllTickets } = EditObjects;
     const [title, setTitle] = useState('')
     const [text_Description, setText_Description] = useState('')
     const [id_Priority, setId_Priority] = useState(0)
@@ -47,7 +47,7 @@ const ModalEditTicket = ({id}) => {
     const getAllCategories = async () =>{
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`${endpoint}/categories`, {
+        const response = await axios.get(`${endpoint}/categories/index`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -84,25 +84,26 @@ const ModalEditTicket = ({id}) => {
         console.error(error)
       }
     }
-    useEffect( () =>{
-        const getTicketById = async () =>{
-            const token = localStorage.getItem('token');
-            const response = await axios.get(`${endpoint}/ticket/get/${id}`, {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              });
-            setTitle(response.data.title)
-            setText_Description(response.data.text_Description)
-            setId_Priority(response.data.id_Priority)
-            setId_Status(response.data.id_Status)
-            setIds_Cateogories(response.data.categories.map(category => category.id))
-            setIds_Tags(response.data.tags.map(tag => tag.id))
-            console.log(response.data)
-            setOldFiles(response.data.files)
+    const getTicketById = async () =>{
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${endpoint}/ticket/get/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      setTitle(response.data.title)
+      setText_Description(response.data.text_Description)
+      setId_Priority(response.data.id_Priority)
+      setId_Status(response.data.id_Status)
+      setIds_Cateogories(response.data.categories.map(category => category.id))
+      setIds_Tags(response.data.tags.map(tag => tag.id))
+      console.log(response.data)
+      setOldFiles(response.data.files)
 
-        }
-        getTicketById()
+  }
+    useEffect( () =>{
+
+        getTicketById();
         getAllPriorities();
         getAllStatuses();
         getAllCategories();
@@ -122,9 +123,6 @@ const ModalEditTicket = ({id}) => {
     formData.append('text_Description', text_Description);
     formData.append('id_Priority', id_Priority); 
     formData.append('id_Status', id_Status); 
-    for (const entry of formData.entries()) {
-      console.log(entry);
-    }
     await axios.post(`${endpoint}/ticket/update/${id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -132,6 +130,7 @@ const ModalEditTicket = ({id}) => {
       }
     });
     handleClose();
+    getAllTickets();
     setFiles([]);
     setTitle('');
     setText_Description('');
@@ -139,6 +138,7 @@ const ModalEditTicket = ({id}) => {
     setId_Status(0);
     setIds_Cateogories([]);
     setIds_Tags([]);
+    setOldFiles([]);
     navigate('/')
 
   }
@@ -149,7 +149,9 @@ const ModalEditTicket = ({id}) => {
     const handleShow = () => setShow(true);
   return (
     <>
-    <Button variant="link" className="dropdown-item" onClick={handleShow}>
+    <Button variant="link" className="dropdown-item" onClick={() => {
+  getTicketById(id);
+  handleShow();}}>
       Editar
     </Button>
 

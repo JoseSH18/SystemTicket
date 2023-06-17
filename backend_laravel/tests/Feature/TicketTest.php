@@ -13,7 +13,6 @@ use App\Models\Status;
 use App\Models\Tag;
 use App\Models\File;
 use App\Models\Ticket;
-use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Testing\Fluent\AssertableJson;
 
@@ -34,6 +33,7 @@ class TicketTest extends TestCase
     public function test_create_ticket(): void
     {
         $user = User::factory()->create();
+        $user->assignRole('User');
         $priorities = Priority::factory()->count(3)->create();
         $statuses = Status::factory()->count(2)->create();
         $tags = Tag::factory()->count(2)->create();
@@ -69,7 +69,7 @@ class TicketTest extends TestCase
      /**
      * A basic feature test example.
      */
-    public function test_ver_todos_los_tickets_asociados(): void
+    public function test_see_all_associated_tickets(): void
     {
         $tickets = Ticket::factory()->count(5)->create();
         $randomTicket = $tickets->random();
@@ -79,14 +79,7 @@ class TicketTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,
         ])->get(route('api.tickets.index'));
-        $response->assertJson(function (AssertableJson $json) use ($ticketsUser) {
-            $json->has($ticketsUser->count())
-                ->where('0.id', $ticketsUser[0]['id'])
-                ->where('0.title', $ticketsUser[0]['title'])
-                ->where('0.text_Description', $ticketsUser[0]['text_Description'])
-                ->where('0.id_Priority', $ticketsUser[0]['id_Priority'])
-                ->where('0.id_Status', $ticketsUser[0]['id_Status'])
-                ->etc();
-        });
+        $response->assertJson($ticketsUser->toArray());
+
     }
 }

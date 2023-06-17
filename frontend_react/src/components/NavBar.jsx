@@ -20,8 +20,11 @@ const NavBar = ({getAllCategories = () => {}, getAllTickets = () => {}}) => {
       <Container fluid>
         <SideBar/>
         
-        {location.pathname === '/' ? (
+        {location.pathname === '/' && role !== 'Admin'? (
          <Navbar.Brand className='text-info' href="/">Ticket System</Navbar.Brand>
+          ) : null}
+          {location.pathname === '/' && role === 'Admin'? (
+         <Navbar.Brand className='text-info' href="/">Ticket System Dashboard</Navbar.Brand>
           ) : null}
           {location.pathname === '/categories' ? (
          <Navbar.Brand className='text-info' href="/categories">Categorías</Navbar.Brand>
