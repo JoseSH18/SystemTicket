@@ -1,6 +1,4 @@
 import React from 'react'
-
-import Button from 'react-bootstrap/Button';
 import { useLocation } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -12,7 +10,9 @@ import SideBar from './SideBar';
 import {Link} from 'react-router-dom'
 
 const role = localStorage.getItem('role')
-const NavBar = ({getAllCategories = () => {}, getAllTickets = () => {}}) => {
+const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}}) => {
+  const { getAllTickets, handleTicketTitleChange, searchTicket } = NavBarItemsTickets;
+  const { getAllCategories, handleCategoryChange, searchCategory } = NavBarItemsCategories;
   const location = useLocation();
   return (
     <div>
@@ -49,15 +49,31 @@ const NavBar = ({getAllCategories = () => {}, getAllTickets = () => {}}) => {
             
         
           </Nav>
+          { location.pathname === '/'? (
+         <Form className="d-flex">
+         <Form.Control
+           type="search"
+           placeholder="Search"
+           className="me-2"
+           aria-label="Search"
+           value={searchTicket}
+           onChange={handleTicketTitleChange}
+         />
+       </Form>
+          ) : null}
+          
+          {role === "Admin" && location.pathname === '/categories' ? (
           <Form className="d-flex">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-            />
-            <Button variant="outline-success">Search</Button>
-          </Form>
+          <Form.Control
+            type="search"
+            placeholder="Search"
+            className="me-2"
+            aria-label="Search"
+            value={searchCategory}
+            onChange={handleCategoryChange}
+          />
+        </Form>
+          ) : null}
         </Navbar.Collapse>
       </Container>
     </Navbar>

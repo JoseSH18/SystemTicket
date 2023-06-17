@@ -15,7 +15,7 @@ const CrudCategory = () => {
   const [categories, setCategories] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [idCategory, setIdCategory] = useState('')
-
+  const [searchCategory, setSearchCategory] = useState('');
   useEffect ( ()=>{
     getAllCategories()
   }, [])
@@ -51,12 +51,21 @@ const CrudCategory = () => {
   const handleClose = () => {
     setShowConfirmation(false);
   };
-
+  const handleCategoryChange = (event) => {
+    setSearchCategory(event.target.value);
+  };
+  const filteredCategories =
+  (searchCategory)
+    ? categories.filter((category) => {
+        const categoryMatch = searchCategory ? category.category.toLowerCase().includes(searchCategory.toLowerCase()) : true;    
+        return  categoryMatch;
+      })
+    : categories;
     if (isLoading) {
       
       return(
       <>
-  <NavBar getAllCategories={getAllCategories} />
+  <NavBar NavBarItemsCategories={{getAllCategories, handleCategoryChange, searchCategory}} />
   <Loading />
 </>
 )
@@ -64,14 +73,14 @@ const CrudCategory = () => {
       else if(!isLoading && categories.length === 0 ){
         return(
           <>
-      <NavBar getAllCategories={getAllCategories} />
+  <NavBar NavBarItemsCategories={{getAllCategories, handleCategoryChange, searchCategory}} />
       <h3 className='text-success'>No se encontraron categorias registradas</h3>
     </>
         )
       }
   return (
     <div>   
-<NavBar getAllCategories={getAllCategories}/>
+  <NavBar NavBarItemsCategories={{getAllCategories, handleCategoryChange, searchCategory}} />
 
     <Table striped bordered hover size="sm" style={{ overflowX: 'auto', maxHeight: '100%' }}>
     <thead>
@@ -81,7 +90,7 @@ const CrudCategory = () => {
       </tr>
     </thead>
     <tbody>
-    {categories.map((category) => (
+    {filteredCategories.map((category) => (
                       <tr key={category.id}>
                           <td>{category.id}</td>   
                           <td>{category.category}</td>   

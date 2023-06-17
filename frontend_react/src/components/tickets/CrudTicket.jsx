@@ -22,6 +22,7 @@ const CrudTicket = () => {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedPriority, setSelectedPriority] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(''); 
+  const [searchTicket, setSearchTicket] = useState(''); 
   const [idTicket, setIdTicket] = useState('')
   useEffect ( ()=>{
     getAllTickets()
@@ -112,25 +113,28 @@ const CrudTicket = () => {
   const handlePriorityChange = (event) => {
     setSelectedPriority(event.target.value);
   };
-
+  const handleTicketTitleChange = (event) => {
+    setSearchTicket(event.target.value);
+  };
   // Filtrar los tickets por categoría seleccionada
   const filteredTickets =
-  (selectedStatus || selectedPriority || selectedCategory)
+  (selectedStatus || selectedPriority || selectedCategory || searchTicket)
     ? tickets.filter((ticket) => {
         const statusMatch = selectedStatus ? ticket.status.status === selectedStatus : true;
+        const ticketMatch = searchTicket ? ticket.title.toLowerCase().includes(searchTicket.toLowerCase()) : true;
         const priorityMatch = selectedPriority ? ticket.priority.type === selectedPriority : true;
         const categoryMatch = selectedCategory
           ? ticket.categories.some((category) => category.category === selectedCategory)
           : true;
           
-        return statusMatch && priorityMatch && categoryMatch;
+        return statusMatch && priorityMatch && categoryMatch && ticketMatch;
       })
     : tickets;
     if (isLoading) {
       
       return(
       <>
-  <NavBar getAllTickets={getAllTickets} />
+  <NavBar NavBarItemsTickets={{getAllTickets, handleTicketTitleChange, searchTicket}} />
   <Loading />
 </>
 )
@@ -138,14 +142,14 @@ const CrudTicket = () => {
       else if(!isLoading && tickets.length === 0 ){
         return(
           <>
-      <NavBar getAllTickets={getAllTickets} />
+      <NavBar NavBarItemsTickets={{getAllTickets, handleTicketTitleChange, searchTicket}} />
       <h3 className='text-success'>No se encontraron tickets registrados</h3>
     </>
         )
       }
   return (
     <div>   
-<NavBar getAllTickets={getAllTickets}/>
+<NavBar NavBarItemsTickets={{getAllTickets, handleTicketTitleChange, searchTicket}}/>
 
     <Table striped bordered hover size="sm" style={{ overflowX: 'auto', maxHeight: '100%' }}>
     <thead>
