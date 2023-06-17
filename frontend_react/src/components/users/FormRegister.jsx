@@ -44,7 +44,7 @@ export const FormRegister = () => {
     </Navbar>
     <div className="background">
     <Col xs={12} sm={10} md={8} lg={6} xl={4} className="mx-auto">
-      <Container className="form-container mt-2">
+      <Container className="form-container mt-5 mb-5">
         <h2>Registro</h2>
         <Form onSubmit={store} >
           <Form.Group controlId="formBasicEmail" className="group" style={{ width: '100%', fontSize: '16px' }}>

@@ -1,6 +1,7 @@
 .background {
     background-color: #c5e2f9; /* Color celeste de fondo */
-    height: 100vh; /* Cubre toda la altura de la pantalla */
+    min-height: 100vh;
+    height: 100%; /* Cubre toda la altura de la pantalla */
     display: flex;
     align-items: center;
     justify-content: center;
