@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import CrudTicket from './components/Tickets/CrudTicket';
+import CrudTicket from './components/tickets/CrudTicket';
 import { FormRegister } from './components/users/FormRegister';
 import FormLogin from './components/users/FormLogin';
 import TicketDetail from './components/tickets/TicketDetail';
 import CrudCategory from './components/categories/CrudCategory';
 import CrudTag from './components/tags/CrudTag';
+import CrudPriority from './components/priorities/CrudPriority';
 import axios from 'axios';
 
 
@@ -94,6 +95,7 @@ function App() {
 
           <Route path="/categories" element={<PrivateRoute element={CrudCategory} adminOnly />} />
           <Route path="/tags" element={<PrivateRoute element={CrudTag} adminOnly />} />
+          <Route path="/priorities" element={<PrivateRoute element={CrudPriority} adminOnly />} />
         </Routes>
       </Router>
     </div>

@@ -38,7 +38,7 @@ const ModalEditTicket = ({EditObjects}) => {
     const getAllPriorities = async () =>{
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`${endpoint}/ticket/priorities`, {
+        const response = await axios.get(`${endpoint}/priorities/index`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -77,7 +77,7 @@ const ModalEditTicket = ({EditObjects}) => {
     const getAllTags= async () =>{
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`${endpoint}/ticket/tags`, {
+        const response = await axios.get(`${endpoint}/tags/index`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -285,7 +285,7 @@ const ModalEditTicket = ({EditObjects}) => {
       <option value={0}>Seleccionar</option>
       {agents.map(agent => (
         <option key={agent.id} value={agent.id}>
-          {agent.name}
+        {agent.name} {agent.last_Name} {agent.second_Last_Name}
         </option>
       ))}
     </Form.Control>

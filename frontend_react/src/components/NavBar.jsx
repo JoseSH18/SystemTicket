@@ -6,13 +6,17 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import ModalCreateTicket from './tickets/ModalCreateTicket';
 import ModalCreateCategory from './categories/ModalCreateCategory';
+import ModalCreateTag from './tags/ModalCreateTag';
+import ModalCreatePriority from './priorities/ModalCreatePriority';
 import SideBar from './SideBar';
 import {Link} from 'react-router-dom'
 
 const role = localStorage.getItem('role')
-const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}}) => {
+const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}, NavBarItemsTags = {}, NavBarItemsPriorities = {}}) => {
   const { getAllTickets, handleTicketTitleChange, searchTicket } = NavBarItemsTickets;
   const { getAllCategories, handleCategoryChange, searchCategory } = NavBarItemsCategories;
+  const { getAllTags, handleTagChange, searchTag } = NavBarItemsTags;
+  const { getAllPriorities, handlePriorityChange, searchPriority } = NavBarItemsPriorities;
   const location = useLocation();
   return (
     <div>
@@ -28,6 +32,12 @@ const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}}) => {
           ) : null}
           {location.pathname === '/categories' ? (
          <Navbar.Brand className='text-info' href="/categories">Categorías</Navbar.Brand>
+          ) : null}
+          {location.pathname === '/tags' ? (
+         <Navbar.Brand className='text-info' href="/tags">Etiquetas</Navbar.Brand>
+          ) : null}
+          {location.pathname === '/priorities' ? (
+         <Navbar.Brand className='text-info' href="/tags">Prioridades</Navbar.Brand>
           ) : null}
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
@@ -45,6 +55,12 @@ const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}}) => {
           ) : null}
           {role === "Admin" && location.pathname === '/categories' ? (
            <ModalCreateCategory getAllCategories={getAllCategories}/>
+          ) : null}
+            {role === "Admin" && location.pathname === '/tags' ? (
+           <ModalCreateTag getAllTags={getAllTags}/>
+          ) : null}
+          {role === "Admin" && location.pathname === '/priorities' ? (
+           <ModalCreatePriority getAllPriorities={getAllPriorities}/>
           ) : null}
             
         
@@ -71,6 +87,30 @@ const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}}) => {
             aria-label="Search"
             value={searchCategory}
             onChange={handleCategoryChange}
+          />
+        </Form>
+          ) : null}
+          {role === "Admin" && location.pathname === '/tags' ? (
+          <Form className="d-flex">
+          <Form.Control
+            type="search"
+            placeholder="Search"
+            className="me-2"
+            aria-label="Search"
+            value={searchTag}
+            onChange={handleTagChange}
+          />
+        </Form>
+          ) : null}
+          {role === "Admin" && location.pathname === '/priorities' ? (
+          <Form className="d-flex">
+          <Form.Control
+            type="search"
+            placeholder="Search"
+            className="me-2"
+            aria-label="Search"
+            value={searchPriority}
+            onChange={handlePriorityChange}
           />
         </Form>
           ) : null}

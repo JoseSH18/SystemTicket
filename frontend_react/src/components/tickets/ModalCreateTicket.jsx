@@ -32,7 +32,7 @@ const ModalCreateTicket = ({getAllTickets}) => {
     const getAllPriorities = async () =>{
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`${endpoint}/ticket/priorities`, {
+        const response = await axios.get(`${endpoint}/priorities/index`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -58,7 +58,7 @@ const ModalCreateTicket = ({getAllTickets}) => {
     const getAllTags= async () =>{
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`${endpoint}/ticket/tags`, {
+        const response = await axios.get(`${endpoint}/tags/index`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

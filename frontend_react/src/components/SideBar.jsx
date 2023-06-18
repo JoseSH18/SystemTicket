@@ -39,6 +39,12 @@ const SideBar = () => {
       {role === "Admin"? (
           <Link onClick={handleClose} to={`/categories`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '100px' }}>Categorías</Link>
       ) : null}
+      {role === "Admin"? (
+          <Link onClick={handleClose} to={`/tags`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '100px' }}>Etiquetas</Link>
+      ) : null}
+        {role === "Admin"? (
+          <Link onClick={handleClose} to={`/priorities`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '100px' }}>Prioridades</Link>
+      ) : null}
       
     </Offcanvas.Body>
   </Offcanvas>

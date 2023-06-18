@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Category;
+use App\Models\Priority;
 use Illuminate\Support\Facades\Validator;
 
-class CategoryController extends Controller
+class PriorityController extends Controller
 {
     public function index()
     {
     
-        $categories = Category::All();
+        $priorities = Priority::All();
         
     
-        return $categories;
+        return $priorities;
     }
 
     public function store(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
-            'category' => 'required|max:30',
+            'type' => 'required|max:30',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -31,34 +31,34 @@ class CategoryController extends Controller
         }
 
         try {
-            $category = new Category();
-            $category->category=$request->category;
-            $category->save();
+            $priority = new Priority();
+            $priority->type=$request->type;
+            $priority->save();
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors($th)->withInput();
         }
     }
-    
-    public function categoryById(string $id)
+
+    public function priorityById(string $id)
     {
-        $category = Category::find($id);
-        return $category;
+        $priority = Priority::find($id);
+        return $priority;
     }
 
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'category' => 'required|max:30',
+            'type' => 'required|max:30',
         ]);
         if ($validator->fails()) {
             return response()->json([
                 'errors' => $validator->errors(),
             ], 422);
         }
-        $category = Category::findOrFail($id);
+        $priority = Priority::findOrFail($id);
         try {
-            $category->category = $request->category;
-            $category->save();
+            $priority->type = $request->type;
+            $priority->save();
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors($th)->withInput();
         }
@@ -66,8 +66,7 @@ class CategoryController extends Controller
 
     public function delete(string $id)
     {
-        $category = Category::destroy($id);
-        return $category;
+        $priority = Priority::destroy($id);
+        return $priority;
     }
-
 }

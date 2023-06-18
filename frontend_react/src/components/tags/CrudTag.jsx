@@ -81,7 +81,7 @@ const CrudTag = () => {
   return (
     <div>   
   <NavBar NavBarItemsTags={{getAllTags, handleTagChange, searchTag}} />
-  <div className="table-responsive">
+  <div className="table-responsive" style={{minHeight: '50vh'}}>
     <Table striped bordered hover size="sm" style={{ overflowX: 'auto', maxHeight: '100%' }}>
     <thead>
       <tr>

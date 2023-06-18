@@ -3,33 +3,33 @@ import {Table, Modal, Button} from 'react-bootstrap';
 import NavBar from '../NavBar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Loading from '../loading';
-import ModalEditCategory from './ModalEditCategory';
+import ModalEditPriority from './ModalEditPriority';
 
 import {useEffect, useState} from 'react'
 import axios from 'axios'
 
 const endpoint = 'http://localhost:8000/api'
 const role = localStorage.getItem('role')
-const CrudCategory = () => {
+const CrudPriority = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [categories, setCategories] = useState([])
+  const [priorities, setPriorities] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [idCategory, setIdCategory] = useState('')
-  const [searchCategory, setSearchCategory] = useState('');
+  const [idPriority, setIdPriority] = useState('')
+  const [searchPriority, setSearchPriority] = useState('');
   useEffect ( ()=>{
-    getAllCategories()
+    getAllPriorities()
   }, [])
 
-  const getAllCategories = async () =>{
+  const getAllPriorities = async () =>{
     setIsLoading(true)
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.get(`${endpoint}/categories/index`, {
+      const response = await axios.get(`${endpoint}/priorities/index`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      setCategories(response.data)
+      setPriorities(response.data)
       setIsLoading(false)
     } catch (error) {
       console.error(error)
@@ -37,13 +37,13 @@ const CrudCategory = () => {
   }
   const confirmDelete = async (id) => {
     const token = localStorage.getItem('token');
-    await axios.delete(`${endpoint}/category/delete/${id}`, {
+    await axios.delete(`${endpoint}/priority/delete/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     setShowConfirmation(false);
-    getAllCategories();
+    getAllPriorities();
   };
   const handleDelete = () => {
     setShowConfirmation(true);
@@ -51,58 +51,58 @@ const CrudCategory = () => {
   const handleClose = () => {
     setShowConfirmation(false);
   };
-  const handleCategoryChange = (event) => {
-    setSearchCategory(event.target.value);
+  const handlePriorityChange = (event) => {
+    setSearchPriority(event.target.value);
   };
-  const filteredCategories =
-  (searchCategory)
-    ? categories.filter((category) => {
-        const categoryMatch = searchCategory ? category.category.toLowerCase().includes(searchCategory.toLowerCase()) : true;    
-        return  categoryMatch;
+  const filteredPriorities =
+  (searchPriority)
+    ? priorities.filter((priority) => {
+        const priorityMatch = searchPriority ? priority.type.toLowerCase().includes(searchPriority.toLowerCase()) : true;    
+        return  priorityMatch;
       })
-    : categories;
+    : priorities;
     if (isLoading) {
       
       return(
       <>
-  <NavBar NavBarItemsCategories={{getAllCategories, handleCategoryChange, searchCategory}} />
+  <NavBar NavBarItemsPriorities={{getAllPriorities, handlePriorityChange, searchPriority}} />
   <Loading />
 </>
 )
       }
-      else if(!isLoading && categories.length === 0 ){
+      else if(!isLoading && priorities.length === 0 ){
         return(
           <>
-  <NavBar NavBarItemsCategories={{getAllCategories, handleCategoryChange, searchCategory}} />
-      <h3 className='text-success'>No se encontraron categorias registradas</h3>
+  <NavBar NavBarItemsPriorities={{getAllPriorities, handlePriorityChange, searchPriority}} />
+      <h3 className='text-success'>No se encontraron prioridades registradas</h3>
     </>
         )
       }
   return (
     <div>   
-  <NavBar NavBarItemsCategories={{getAllCategories, handleCategoryChange, searchCategory}} />
+  <NavBar NavBarItemsPriorities={{getAllPriorities, handlePriorityChange, searchPriority}} />
   <div className="table-responsive" style={{minHeight: '50vh'}}>
     <Table striped bordered hover size="sm" style={{ overflowX: 'auto', maxHeight: '100%' }}>
     <thead>
       <tr>
         <th>Id</th>
-        <th>Nombre de Categoría</th>
+        <th>Tipo de Prioridad</th>
       </tr>
     </thead>
     <tbody>
-    {filteredCategories.map((category) => (
-                      <tr key={category.id}>
-                          <td>{category.id}</td>   
-                          <td>{category.category}</td>   
+    {filteredPriorities.map((priority) => (
+                      <tr key={priority.id}>
+                          <td>{priority.id}</td>   
+                          <td>{priority.type}</td>   
                           <td>
                           <NavDropdown title={<i className="fa-solid fa-ellipsis-vertical"></i>} id="navbarScrollingDropdown">
                             
                               {role === "Admin" ? (
-                             <NavDropdown.Item href="#action3"><ModalEditCategory EditObjects={{id: category.id, getAllCategories: getAllCategories}}/></NavDropdown.Item>
+                             <NavDropdown.Item href="#action3"><ModalEditPriority EditObjects={{id: priority.id, getAllPriorities: getAllPriorities}}/></NavDropdown.Item>
                               ) : null}
                             {role === "Admin" ? (
                                 <NavDropdown.Item href="#action4">
-                                  <button onClick={() => {setIdCategory(category.id);handleDelete();}} variant="link" className="dropdown-item">Eliminar</button>
+                                  <button onClick={() => {setIdPriority(priority.id);handleDelete();}} variant="link" className="dropdown-item">Eliminar</button>
 
                                 </NavDropdown.Item>
                                 
@@ -119,10 +119,10 @@ const CrudCategory = () => {
   {showConfirmation && (
   <Modal show={setShowConfirmation} onHide={handleClose}>
     <Modal.Header closeButton>
-      <Modal.Title>¿Estás seguro de que deseas eliminar esta categoría?</Modal.Title>
+      <Modal.Title>¿Estás seguro de que deseas eliminar esta prioridad?</Modal.Title>
     </Modal.Header>
     <Modal.Footer>
-    <Button variant="outline-success" onClick={()=>confirmDelete(idCategory)}>Sí</Button>
+    <Button variant="outline-success" onClick={()=>confirmDelete(idPriority)}>Sí</Button>
     <Button variant="outline-danger" onClick={() => setShowConfirmation(false)}>Cancelar</Button>
     </Modal.Footer>
 
@@ -132,4 +132,4 @@ const CrudCategory = () => {
   )
 }
 
-export default CrudCategory
+export default CrudPriority

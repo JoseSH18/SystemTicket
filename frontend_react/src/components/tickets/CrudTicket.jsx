@@ -79,7 +79,7 @@ const CrudTicket = () => {
   const getAllPriorities = async () =>{
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.get(`${endpoint}/ticket/priorities`, {
+      const response = await axios.get(`${endpoint}/priorities/index`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -151,7 +151,7 @@ const CrudTicket = () => {
   return (
     <div >   
 <NavBar NavBarItemsTickets={{getAllTickets, handleTicketTitleChange, searchTicket}}/>
-    <div className="table-responsive">
+    <div className="table-responsive" style={{minHeight: '50vh'}}>
     <Table striped bordered hover size="sm" style={{ overflowX: 'auto', maxHeight: '100%' }}>
     <thead>
       <tr>

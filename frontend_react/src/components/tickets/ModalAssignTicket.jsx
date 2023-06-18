@@ -69,7 +69,7 @@ const ModalAssignTicket = ({AssignObjects}) => {
       <option value={0}>Seleccionar</option>
       {agents.map(agent => (
         <option key={agent.id} value={agent.id}>
-          {agent.name}
+         {agent.name} {agent.last_Name} {agent.second_Last_Name}
         </option>
       ))}
     </Form.Control>

@@ -6,40 +6,38 @@ import {Button, Form, Modal} from 'react-bootstrap';
 
 
 const endpoint = 'http://localhost:8000/api'
-const ModalEditTag = ({EditObjects}) => {
-  const [errors, setErrors] = useState({});
-    const { id, getAllTags } = EditObjects;
-    const [tag, setTag] = useState('')
+const ModalCreatePriority = ({getAllPriorities}) => {
+
+    const [type, setType] = useState('')
+    const [errors, setErrors] = useState({});
 
     const navigate = useNavigate()
 
-    const getTagById = async () =>{
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${endpoint}/tag/get/${id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setTag(response.data.tag)
-    }
-    useEffect( () =>{
+
+  
+    
+
+    
+  
+    
+
+    useEffect ( ()=>{
         
-        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
   
-  const update = async (e) =>{
+  const store = async (e) =>{
     const token = localStorage.getItem('token');
     e.preventDefault()
     const formData = new FormData();
-    formData.append('tag', tag); 
-
-    await axios.post(`${endpoint}/tag/update/${id}`, formData, {
+    formData.append('type', type); 
+  
+    await axios.post(`${endpoint}/priority/store`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
       }
     }).then(() => {
-      getAllTags();
+      getAllPriorities();
       closeModal();
     }).catch(error => {
       if (error.response && error.response.status === 422) {
@@ -49,12 +47,12 @@ const ModalEditTag = ({EditObjects}) => {
         // Manejo de otros tipos de errores
       }
     });
-
+    
   }
   const closeModal = () => {
     handleClose();
-    setTag('');
-    navigate('/tags')
+    setType('');
+    navigate('/priorities')
   };
     const [show, setShow] = useState(false);
 
@@ -62,28 +60,26 @@ const ModalEditTag = ({EditObjects}) => {
     const handleShow = () => setShow(true);
   return (
     <>
-    <Button variant="link" className="dropdown-item" onClick={() => {
-  getTagById(id);
-  handleShow();}}>
-      Editar
+    <Button variant="primary" onClick={handleShow}>
+      Crear Prioridad
     </Button>
 
     <Modal show={show} onHide={handleClose}>
-    <Form onSubmit={update}>
+    <Form onSubmit={store}>
       <Modal.Header closeButton>
-        <Modal.Title>Editar Etiqueta</Modal.Title>
+        <Modal.Title>Crear Prioridad</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         
-  <Form.Group controlId="formtag">
-    <Form.Label>Nombre de Etiqueta</Form.Label>
+  <Form.Group controlId="formText">
+    <Form.Label>Tipo de prioridad</Form.Label>
     <Form.Control
       type="text"
-      value={tag}
-      onChange={e => setTag(e.target.value)}
+      value={type}
+      onChange={e => setType(e.target.value)}
       required
     />
-     {errors.tag && <span className="error text-danger">{errors.tag[0]}</span>}
+     {errors.type && <span className="error text-danger">{errors.type[0]}</span>}
   </Form.Group>
 </Modal.Body>
       <Modal.Footer>
@@ -91,7 +87,7 @@ const ModalEditTag = ({EditObjects}) => {
           Cerrar
         </Button>
         <Button variant="primary" type="submit" >
-            Editar
+            Crear
         </Button>
       </Modal.Footer>
       </Form>
@@ -101,4 +97,4 @@ const ModalEditTag = ({EditObjects}) => {
   )
 }
 
-export default ModalEditTag
+export default ModalCreatePriority
