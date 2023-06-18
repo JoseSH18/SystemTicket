@@ -28,14 +28,14 @@ const SideBar = () => {
     <Button onClick={handleShow} className='d-flex me-5' variant="outline-success">
     Menu
   </Button>
-    <Offcanvas show={show} onHide={handleClose}>
+    <Offcanvas show={show} onHide={handleClose} className="bg-light">
     <Offcanvas.Header closeButton>
       <Offcanvas.Title>{role}</Offcanvas.Title>
     </Offcanvas.Header>
     <Offcanvas.Body>
 
       <Button variant="outline-danger" onClick={logout} style={{ width: '100px' }}>Logout</Button>
-      <Link onClick={handleClose} to={`/`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '100px' }}>Home</Link>
+      <Link onClick={handleClose} to={`/`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '100px' }}>Tickets</Link>
       {role === "Admin"? (
           <Link onClick={handleClose} to={`/categories`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '100px' }}>Categorías</Link>
       ) : null}
