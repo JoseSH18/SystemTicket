@@ -9,6 +9,6 @@
     <p>A las: {{ now() }}</p>
     <p>Ticket: {{ $ticket->title }}</p>
     <p>Desea editar el ticket?</p>
-    <a href="http://localhost:3000/detail/{{ $ticket->id }}">Editar Ticket</a>
+    <a href="http://localhost:3000/ticket/{{ $ticket->id }}">Editar Ticket</a>
 </body>
 </html>

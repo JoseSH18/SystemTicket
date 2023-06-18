@@ -93,7 +93,7 @@ function App() {
           <Route path="/register" element={<FormRegister />} />
 
           <Route path="/" element={<PrivateRoute element={CrudTicket} />} />
-          <Route path="/ticket:id" element={<PrivateRoute element={FormEditTicket} />} />
+          <Route path="/ticket/:id" element={<PrivateRoute element={FormEditTicket} />} />
           <Route path="/detail/:id" element={<PrivateRoute element={TicketDetail} />} />
 
           <Route path="/categories" element={<PrivateRoute element={CrudCategory} adminOnly />} />
