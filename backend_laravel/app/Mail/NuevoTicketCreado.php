@@ -13,8 +13,8 @@ use App\Models\Ticket;
 class NuevoTicketCreado extends Mailable
 {
     use Queueable, SerializesModels;
-    public $user;
-    public $ticket;
+    public User $user;
+    public Ticket $ticket;
     /**
      * Create a new message instance.
      */

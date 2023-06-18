@@ -15,7 +15,8 @@ use App\Models\Comment;
 use Error;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NuevoTicketCreado;
 
 class TicketController extends Controller
 {
@@ -108,7 +109,14 @@ class TicketController extends Controller
                 }
                 
                 
-              
+                try {
+                    $this->sendEmail($ticket);
+                } catch (\Throwable $th) {
+                    return response()->json([
+                        'error' => 'Ocurrió un error al enviar el correo electrónico.',
+                        'exception' => $th->getMessage(),
+                    ], 500);
+                }
             
            
         } catch (\Throwable $th) {
@@ -218,7 +226,7 @@ class TicketController extends Controller
                     }
                 }
                 
-                
+
               
             
            
@@ -233,6 +241,8 @@ class TicketController extends Controller
     {
         $ticket = Ticket::with('user', 'agent', 'priority', 'status', 'categories', 'tags', 'files', 'comments')
         ->find($id);
+
+      
         return $ticket;
     }
     public function assign(Request $request)
@@ -286,5 +296,15 @@ class TicketController extends Controller
     {
         $ticket = Ticket::destroy($id);
         return $ticket;
+    }
+    public function sendEmail(Ticket $ticket)
+    {
+        $user = Auth::user();
+        $admin = User::whereHas('roles', function ($query) {
+            $query->where('name', 'Admin');
+        })->first();
+        Mail::to($admin->email)->send(new NuevoTicketCreado($user, $ticket));
+
+        return "Ticket creado y correo enviado correctamente.";
     }
 }
