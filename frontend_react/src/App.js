@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import CrudTicket from './components/tickets/CrudTicket.jsx';
+import CrudTicket from './components/Tickets/CrudTicket';
 import { FormRegister } from './components/users/FormRegister';
 import FormLogin from './components/users/FormLogin';
 import TicketDetail from './components/tickets/TicketDetail';
 import CrudCategory from './components/categories/CrudCategory';
+import CrudTag from './components/tags/CrudTag';
 import axios from 'axios';
+
 
 const PrivateRoute = ({ element: Element, adminOnly, ...rest }) => {
   const isAuthenticated = localStorage.getItem('token');
@@ -91,6 +93,7 @@ function App() {
           <Route path="/detail/:id" element={<PrivateRoute element={TicketDetail} />} />
 
           <Route path="/categories" element={<PrivateRoute element={CrudCategory} adminOnly />} />
+          <Route path="/tags" element={<PrivateRoute element={CrudTag} adminOnly />} />
         </Routes>
       </Router>
     </div>
