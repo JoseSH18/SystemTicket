@@ -4,10 +4,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import CrudTicket from './components/tickets/CrudTicket';
 import { FormRegister } from './components/users/FormRegister';
 import FormLogin from './components/users/FormLogin';
+import FormEditTicket from './components/tickets/FormEditTicket';
 import TicketDetail from './components/tickets/TicketDetail';
 import CrudCategory from './components/categories/CrudCategory';
 import CrudTag from './components/tags/CrudTag';
 import CrudPriority from './components/priorities/CrudPriority';
+import CrudStatus from './components/statuses/CrudStatus';
 import axios from 'axios';
 
 
@@ -91,11 +93,13 @@ function App() {
           <Route path="/register" element={<FormRegister />} />
 
           <Route path="/" element={<PrivateRoute element={CrudTicket} />} />
+          <Route path="/ticket:id" element={<PrivateRoute element={FormEditTicket} />} />
           <Route path="/detail/:id" element={<PrivateRoute element={TicketDetail} />} />
 
           <Route path="/categories" element={<PrivateRoute element={CrudCategory} adminOnly />} />
           <Route path="/tags" element={<PrivateRoute element={CrudTag} adminOnly />} />
           <Route path="/priorities" element={<PrivateRoute element={CrudPriority} adminOnly />} />
+          <Route path="/statuses" element={<PrivateRoute element={CrudStatus} adminOnly />} />
         </Routes>
       </Router>
     </div>

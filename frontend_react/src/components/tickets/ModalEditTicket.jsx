@@ -91,7 +91,7 @@ const ModalEditTicket = ({EditObjects}) => {
     const getAllStatuses = async () =>{
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`${endpoint}/ticket/statuses`, {
+        const response = await axios.get(`${endpoint}/statuses/index`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

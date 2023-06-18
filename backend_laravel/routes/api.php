@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\PriorityController;
+use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\LoginController;
 /*
@@ -27,10 +28,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::get('/ticket/get/{id}', [TicketController::class, 'ticketById'])->name('api.tickets.ticketById')->middleware('can:api.tickets.ticketById');
     Route::put('/ticket/assign/{id}', [TicketController::class, 'assign'])->name('api.tickets.assign')->middleware('can:api.tickets.assign');
     Route::delete('/ticket/delete/{id}', [TicketController::class, 'delete'])->name('api.tickets.delete')->middleware('can:api.tickets.delete');
-    Route::get('/ticket/priorities', [TicketController::class, 'getPriorities'])->name('api.tickets.priorities')->middleware('can:api.tickets.priorities');
-    Route::get('/ticket/statuses', [TicketController::class, 'getStatuses'])->name('api.tickets.statuses')->middleware('can:api.tickets.statuses');
     Route::get('/ticket/agents', [TicketController::class, 'getAgents'])->name('api.tickets.agents')->middleware('can:api.tickets.agents');
-    Route::get('/ticket/tags', [TicketController::class, 'getTags'])->name('api.tickets.tags')->middleware('can:api.tickets.tags');
     Route::post('/ticket/addComment', [TicketController::class, 'addComment'])->name('api.tickets.addComment')->middleware('can:api.tickets.addComment');
 
     Route::get('/categories/index', [CategoryController::class, 'index'])->name('api.categories.index')->middleware('can:api.categories.index');
@@ -50,6 +48,12 @@ Route::middleware('jwt.auth')->group(function () {
     Route::post('/priority/update/{id}', [PriorityController::class, 'update'])->name('api.priorities.update')->middleware('can:api.priorities.update');
     Route::get('/priority/get/{id}', [PriorityController::class, 'priorityById'])->name('api.priorities.priorityById')->middleware('can:api.priorities.priorityById');
     Route::delete('/priority/delete/{id}', [PriorityController::class, 'delete'])->name('api.priorities.delete')->middleware('can:api.priorities.delete');
+
+    Route::get('/statuses/index', [StatusController::class, 'index'])->name('api.statuses.index')->middleware('can:api.statuses.index');
+    Route::post('/status/store', [StatusController::class, 'store'])->name('api.statuses.store')->middleware('can:api.statuses.store');
+    Route::post('/status/update/{id}', [StatusController::class, 'update'])->name('api.statuses.update')->middleware('can:api.statuses.update');
+    Route::get('/status/get/{id}', [StatusController::class, 'statusById'])->name('api.statuses.statusById')->middleware('can:api.statuses.statusById');
+    Route::delete('/status/delete/{id}', [StatusController::class, 'delete'])->name('api.statuses.delete')->middleware('can:api.statuses.delete');
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('api.auth.logout')->middleware('can:api.auth.logout');
 });

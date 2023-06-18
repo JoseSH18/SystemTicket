@@ -28,11 +28,11 @@ const SideBar = () => {
     <Button onClick={handleShow} className='d-flex me-5' variant="outline-success">
     Menu
   </Button>
-    <Offcanvas show={show} onHide={handleClose} className="bg-light">
+    <Offcanvas show={show} onHide={handleClose} className="bg-light bg-gradient" style={{ width: '250px' }}>
     <Offcanvas.Header closeButton>
       <Offcanvas.Title>{role}</Offcanvas.Title>
     </Offcanvas.Header>
-    <Offcanvas.Body>
+    <Offcanvas.Body className='align-items-center'>
 
       <Button variant="outline-danger" onClick={logout} style={{ width: '100px' }}>Logout</Button>
       <Link onClick={handleClose} to={`/`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '100px' }}>Tickets</Link>
@@ -45,7 +45,9 @@ const SideBar = () => {
         {role === "Admin"? (
           <Link onClick={handleClose} to={`/priorities`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '100px' }}>Prioridades</Link>
       ) : null}
-      
+      {role === "Admin"? (
+          <Link onClick={handleClose} to={`/statuses`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '100px' }}>Estados</Link>
+      ) : null}
     </Offcanvas.Body>
   </Offcanvas>
   </div>

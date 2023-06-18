@@ -8,15 +8,17 @@ import ModalCreateTicket from './tickets/ModalCreateTicket';
 import ModalCreateCategory from './categories/ModalCreateCategory';
 import ModalCreateTag from './tags/ModalCreateTag';
 import ModalCreatePriority from './priorities/ModalCreatePriority';
+import ModalCreateStatus from './statuses/ModalCreateStatus';
 import SideBar from './SideBar';
 import {Link} from 'react-router-dom'
 
 const role = localStorage.getItem('role')
-const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}, NavBarItemsTags = {}, NavBarItemsPriorities = {}}) => {
+const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}, NavBarItemsTags = {}, NavBarItemsPriorities = {}, NavBarItemsStatuses = {}}) => {
   const { getAllTickets, handleTicketTitleChange, searchTicket } = NavBarItemsTickets;
   const { getAllCategories, handleCategoryChange, searchCategory } = NavBarItemsCategories;
   const { getAllTags, handleTagChange, searchTag } = NavBarItemsTags;
   const { getAllPriorities, handlePriorityChange, searchPriority } = NavBarItemsPriorities;
+  const { getAllStatuses, handleStatusChange, searchStatus } = NavBarItemsStatuses;
   const location = useLocation();
   return (
     <div>
@@ -37,7 +39,10 @@ const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}, NavBarItem
          <Navbar.Brand className='text-info' href="/tags">Etiquetas</Navbar.Brand>
           ) : null}
           {location.pathname === '/priorities' ? (
-         <Navbar.Brand className='text-info' href="/tags">Prioridades</Navbar.Brand>
+         <Navbar.Brand className='text-info' href="/priorities">Prioridades</Navbar.Brand>
+          ) : null}
+          {location.pathname === '/statuses' ? (
+         <Navbar.Brand className='text-info' href="/statuses">Estados</Navbar.Brand>
           ) : null}
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
@@ -62,7 +67,9 @@ const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}, NavBarItem
           {role === "Admin" && location.pathname === '/priorities' ? (
            <ModalCreatePriority getAllPriorities={getAllPriorities}/>
           ) : null}
-            
+          {role === "Admin" && location.pathname === '/statuses' ? (
+           <ModalCreateStatus getAllStatuses={getAllStatuses}/>
+          ) : null}
         
           </Nav>
           { location.pathname === '/'? (
@@ -111,6 +118,18 @@ const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}, NavBarItem
             aria-label="Search"
             value={searchPriority}
             onChange={handlePriorityChange}
+          />
+        </Form>
+          ) : null}
+                    {role === "Admin" && location.pathname === '/statuses' ? (
+          <Form className="d-flex">
+          <Form.Control
+            type="search"
+            placeholder="Search"
+            className="me-2"
+            aria-label="Search"
+            value={searchStatus}
+            onChange={handleStatusChange}
           />
         </Form>
           ) : null}

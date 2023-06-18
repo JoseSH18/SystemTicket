@@ -26,15 +26,7 @@ class rolseeder extends Seeder
         $permissionTicketByid = Permission::firstOrCreate(['name' => 'api.tickets.ticketById']);
         $permissionTicketByid->syncRoles([$role1, $role2, $role3]);
         Permission::firstOrCreate(['name'=>'api.tickets.assign'])->assignRole($role2);
-        $permissionTicketPriorities = Permission::firstOrCreate(['name' => 'api.tickets.priorities']);
-        $permissionTicketPriorities->syncRoles([$role1, $role2, $role3]);
-        $permissionTicketStatuses = Permission::firstOrCreate(['name' => 'api.tickets.statuses']);
-        $permissionTicketStatuses->syncRoles([$role1, $role2, $role3]);
         Permission::firstOrCreate(['name'=>'api.tickets.agents'])->assignRole($role2);
-        $permissionTicketTags = Permission::firstOrCreate(['name' => 'api.tickets.tags']);
-        $permissionTicketTags->syncRoles([$role1, $role2, $role3]);
-        $permissionTicketCategories = Permission::firstOrCreate(['name' => 'api.tickets.categories']);
-        $permissionTicketCategories->syncRoles([$role1, $role2, $role3]);
         $permissionLogout = Permission::firstOrCreate(['name' => 'api.auth.logout']);
         $permissionLogout->syncRoles([$role1, $role2, $role3]);
         $permissionComment = Permission::firstOrCreate(['name' => 'api.tickets.addComment']);
@@ -47,6 +39,8 @@ class rolseeder extends Seeder
         $permissionTagIndex->syncRoles([$role1, $role2, $role3]);
         $permissionPriorityIndex= Permission::firstOrCreate(['name' => 'api.priorities.index']);
         $permissionPriorityIndex->syncRoles([$role1, $role2, $role3]);
+        $permissionStatusIndex= Permission::firstOrCreate(['name' => 'api.statuses.index']);
+        $permissionStatusIndex->syncRoles([$role1, $role2, $role3]);
 
         Permission::firstOrCreate(['name'=>'api.categories.store'])->assignRole($role2);
         Permission::firstOrCreate(['name'=>'api.categories.update'])->assignRole($role2);
@@ -62,6 +56,11 @@ class rolseeder extends Seeder
         Permission::firstOrCreate(['name'=>'api.priorities.update'])->assignRole($role2);
         Permission::firstOrCreate(['name'=>'api.priorities.priorityById'])->assignRole($role2);
         Permission::firstOrCreate(['name'=>'api.priorities.delete'])->assignRole($role2);
+
+        Permission::firstOrCreate(['name'=>'api.statuses.store'])->assignRole($role2);
+        Permission::firstOrCreate(['name'=>'api.statuses.update'])->assignRole($role2);
+        Permission::firstOrCreate(['name'=>'api.statuses.statusById'])->assignRole($role2);
+        Permission::firstOrCreate(['name'=>'api.statuses.delete'])->assignRole($role2);
 
     }
 }
