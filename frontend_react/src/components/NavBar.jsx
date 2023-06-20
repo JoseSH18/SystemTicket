@@ -13,12 +13,13 @@ import SideBar from './SideBar';
 import {Link} from 'react-router-dom'
 
 const role = localStorage.getItem('role')
-const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}, NavBarItemsTags = {}, NavBarItemsPriorities = {}, NavBarItemsStatuses = {}}) => {
+const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}, NavBarItemsTags = {}, NavBarItemsPriorities = {}, NavBarItemsStatuses = {}, NavBarItemsLogs = {}}) => {
   const { getAllTickets, handleTicketTitleChange, searchTicket } = NavBarItemsTickets;
   const { getAllCategories, handleCategoryChange, searchCategory } = NavBarItemsCategories;
   const { getAllTags, handleTagChange, searchTag } = NavBarItemsTags;
   const { getAllPriorities, handlePriorityChange, searchPriority } = NavBarItemsPriorities;
   const { getAllStatuses, handleStatusChange, searchStatus } = NavBarItemsStatuses;
+  const { handleLogChange, searchLog } = NavBarItemsLogs;
   const location = useLocation();
   return (
     <div>
@@ -43,6 +44,9 @@ const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}, NavBarItem
           ) : null}
           {location.pathname === '/statuses' ? (
          <Navbar.Brand className='text-info' href="/statuses">Estados</Navbar.Brand>
+          ) : null}
+        {location.pathname === '/logs' ? (
+         <Navbar.Brand className='text-info' href="/statuses">Logs</Navbar.Brand>
           ) : null}
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
@@ -121,7 +125,7 @@ const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}, NavBarItem
           />
         </Form>
           ) : null}
-                    {role === "Admin" && location.pathname === '/statuses' ? (
+          {role === "Admin" && location.pathname === '/statuses' ? (
           <Form className="d-flex">
           <Form.Control
             type="search"
@@ -130,6 +134,18 @@ const NavBar = ({NavBarItemsCategories = {}, NavBarItemsTickets = {}, NavBarItem
             aria-label="Search"
             value={searchStatus}
             onChange={handleStatusChange}
+          />
+        </Form>
+          ) : null}
+          {role === "Admin" && location.pathname === '/logs' ? (
+          <Form className="d-flex">
+          <Form.Control
+            type="search"
+            placeholder="Search"
+            className="me-2"
+            aria-label="Search"
+            value={searchLog}
+            onChange={handleLogChange}
           />
         </Form>
           ) : null}

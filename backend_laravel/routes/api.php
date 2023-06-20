@@ -30,6 +30,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::delete('/ticket/delete/{id}', [TicketController::class, 'delete'])->name('api.tickets.delete')->middleware('can:api.tickets.delete');
     Route::get('/ticket/agents', [TicketController::class, 'getAgents'])->name('api.tickets.agents')->middleware('can:api.tickets.agents');
     Route::post('/ticket/addComment', [TicketController::class, 'addComment'])->name('api.tickets.addComment')->middleware('can:api.tickets.addComment');
+    Route::get('/ticket/logs', [TicketController::class, 'getLogs'])->name('api.tickets.logs')->middleware('can:api.tickets.logs');
 
     Route::get('/categories/index', [CategoryController::class, 'index'])->name('api.categories.index')->middleware('can:api.categories.index');
     Route::post('/category/store', [CategoryController::class, 'store'])->name('api.categories.store')->middleware('can:api.categories.store');

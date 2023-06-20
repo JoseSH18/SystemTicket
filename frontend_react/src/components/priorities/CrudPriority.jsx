@@ -87,6 +87,7 @@ const CrudPriority = () => {
       <tr>
         <th>Id</th>
         <th>Tipo de Prioridad</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>

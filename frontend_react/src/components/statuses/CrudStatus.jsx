@@ -87,6 +87,7 @@ const CrudStatus = () => {
       <tr>
         <th>Id</th>
         <th>Nombre del Estado</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>

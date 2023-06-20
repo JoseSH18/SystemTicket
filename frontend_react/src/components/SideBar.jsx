@@ -48,6 +48,9 @@ const SideBar = () => {
       {role === "Admin"? (
           <Link onClick={handleClose} to={`/statuses`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '100px' }}>Estados</Link>
       ) : null}
+      {role === "Admin"? (
+          <Link onClick={handleClose} to={`/logs`}  className='btn btn-outline-info d-flex mt-2'style={{ width: '100px' }}>Logs</Link>
+      ) : null}
     </Offcanvas.Body>
   </Offcanvas>
   </div>

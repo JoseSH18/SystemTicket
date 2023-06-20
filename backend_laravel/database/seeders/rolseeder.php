@@ -61,6 +61,7 @@ class rolseeder extends Seeder
         Permission::firstOrCreate(['name'=>'api.statuses.update'])->assignRole($role2);
         Permission::firstOrCreate(['name'=>'api.statuses.statusById'])->assignRole($role2);
         Permission::firstOrCreate(['name'=>'api.statuses.delete'])->assignRole($role2);
+        Permission::firstOrCreate(['name'=>'api.tickets.logs'])->assignRole($role2);
 
     }
 }

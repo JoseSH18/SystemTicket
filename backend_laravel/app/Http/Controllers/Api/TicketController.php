@@ -12,6 +12,7 @@ use App\Models\Tag;
 use App\Models\File;
 use App\Models\Status;
 use App\Models\Comment;
+use App\Models\Log;
 use Error;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -61,7 +62,7 @@ class TicketController extends Controller
             ], 422);
         }
     
-        
+      
         try {
 
                 $user = Auth::user();
@@ -111,18 +112,24 @@ class TicketController extends Controller
                 
                 try {
                     $this->sendEmail($ticket);
+                   
                 } catch (\Throwable $th) {
                     return response()->json([
                         'error' => 'Ocurrió un error al enviar el correo electrónico.',
                         'exception' => $th->getMessage(),
                     ], 500);
                 }
-            
-           
+                $log = new Log();
+                $log->message = "El usuario " . $user->name . " " . $user->last_Name . " " . $user->second_Last_Name . " ha creado un nuevo Ticket llamado " . $ticket->title;
+                $log->save();
+
         } catch (\Throwable $th) {
             
     
-            return redirect()->back()->withErrors($th)->withInput();
+            return response()->json([
+                'error' => 'Ocurrió un error al crear un ticket',
+                'exception' => $th->getMessage(),
+            ], 500);
         }
         
     }
@@ -228,11 +235,15 @@ class TicketController extends Controller
                 
 
               
-            
-           
+                $log = new Log();
+                $log->message = "El agente " . $agent->name . " " . $agent->last_Name . " " . $agent->second_Last_Name . " ha editado un Ticket llamado " . $ticket->title;
+                $log->save();
         } catch (\Throwable $th) {
             
-            return redirect()->back()->withErrors($th)->withInput();
+            return response()->json([
+                'error' => 'Ocurrió un error al editar un ticket',
+                'exception' => $th->getMessage(),
+            ], 500);
         }
         
     }
@@ -306,5 +317,17 @@ class TicketController extends Controller
         Mail::to($admin->email)->send(new NuevoTicketCreado($user, $ticket));
 
         return "Ticket creado y correo enviado correctamente.";
+    }
+    public function getLogs(){
+        try {
+            $logs = Log::All();
+            return $logs;
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => 'Ocurrió un error al obtener los logs',
+                'exception' => $th->getMessage(),
+            ], 500);
+        }
+       
     }
 }

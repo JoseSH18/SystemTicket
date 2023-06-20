@@ -87,6 +87,7 @@ const CrudCategory = () => {
       <tr>
         <th>Id</th>
         <th>Nombre de Categoría</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>

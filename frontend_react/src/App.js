@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import CrudTicket from './components/tickets/CrudTicket';
+import LogHistory from './components/tickets/LogHistory';
 import { FormRegister } from './components/users/FormRegister';
 import FormLogin from './components/users/FormLogin';
 import FormEditTicket from './components/tickets/FormEditTicket';
@@ -100,6 +101,7 @@ function App() {
           <Route path="/tags" element={<PrivateRoute element={CrudTag} adminOnly />} />
           <Route path="/priorities" element={<PrivateRoute element={CrudPriority} adminOnly />} />
           <Route path="/statuses" element={<PrivateRoute element={CrudStatus} adminOnly />} />
+          <Route path="/logs" element={<PrivateRoute element={LogHistory} adminOnly />} />
         </Routes>
       </Router>
     </div>

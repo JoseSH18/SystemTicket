@@ -190,7 +190,7 @@ const CrudTicket = () => {
               </select>
         </th>
         <th>Etiquetas</th>
-        <th>Actions</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>

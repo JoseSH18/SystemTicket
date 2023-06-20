@@ -87,6 +87,7 @@ const CrudTag = () => {
       <tr>
         <th>Id</th>
         <th>Nombre de Etiqueta</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
