@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
+use App\Models\User;
 class rolseeder extends Seeder
 {
     /**
@@ -62,6 +62,16 @@ class rolseeder extends Seeder
         Permission::firstOrCreate(['name'=>'api.statuses.statusById'])->assignRole($role2);
         Permission::firstOrCreate(['name'=>'api.statuses.delete'])->assignRole($role2);
         Permission::firstOrCreate(['name'=>'api.tickets.logs'])->assignRole($role2);
+
+        $admin = User::factory()
+        ->state(function (array $attributes) {
+            return [
+                'email' => 'myhealthcorreos@gmail.com',
+                'password' => bcrypt('11111111'),
+            ];
+        })
+        ->create();
+        $admin->assignRole('Admin');
 
     }
 }

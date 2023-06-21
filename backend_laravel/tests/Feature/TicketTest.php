@@ -54,9 +54,9 @@ class TicketTest extends TestCase
             'id_Status' => $randomStatus->id,
             'title' => $ticket->title,
             'text_Description' => $ticket->text_Description,
-            'file[]' => $file->pluck('file')->toArray(),
-            'idsCategories[]' => $idsCategories,
-            'idsTags[]' => $idsTags,
+            'file' => $file->pluck('file')->toArray(),
+            'ids_Categories' => $idsCategories->toArray(),
+            'ids_Tags' => $idsTags->toArray(),        
         ]);
         $response->assertStatus(200);
         $this->assertDatabaseHas('tickets', [

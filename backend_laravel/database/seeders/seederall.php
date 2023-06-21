@@ -9,6 +9,7 @@ use App\Models\Status;
 use App\Models\Tag;
 use App\Models\Category;
 
+
 class seederall extends Seeder
 {
     /**

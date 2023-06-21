@@ -114,6 +114,9 @@ class TicketController extends Controller
                     $this->sendEmail($ticket);
                    
                 } catch (\Throwable $th) {
+                    // Agregar esta línea para registrar el mensaje de la excepción
+                    \Log::error('Error al enviar el correo electrónico: ' . $th->getMessage());
+
                     return response()->json([
                         'error' => 'Ocurrió un error al enviar el correo electrónico.',
                         'exception' => $th->getMessage(),
