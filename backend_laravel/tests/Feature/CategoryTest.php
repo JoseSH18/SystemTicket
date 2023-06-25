@@ -54,5 +54,6 @@ class CategoryTest extends TestCase
         ])->get(route('api.categories.index'));
 
         $response->assertJson($categories->toArray());
+        
     }
 }
